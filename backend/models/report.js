@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const reportSchema = mongoose.Schema({
-    id: { type: Number },
+    id: { type: Number, unique: true },
     userID: { type: Number },
     content: { type: String},
     shopID: {type: Number },
