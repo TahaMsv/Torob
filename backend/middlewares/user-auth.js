@@ -8,6 +8,7 @@ function checkAuthorization(req, res, next) {
         try {
             const decodedToken = jwt.verify(authParts[1], "secret");
             req.user = decodedToken.userId;
+            req.token = authParts[1];
         } catch(err) {
             console.log(err)
             return res.status(400).json({error: {message: "Bad Request!"}});

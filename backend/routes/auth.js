@@ -5,6 +5,7 @@ const AdminUser = mongoose.model('AdminUser');
 const StoreOwner = mongoose.model('StoreOwner');
 const error = require("../utilities/errorFunction");
 const authorization = require('../middlewares/user-auth');
+const jwt = require('jsonwebtoken');
 
 router.post('/signup', async (req, res, next) => {
     const { email, name, phone, password, userType } = req.body;
@@ -67,7 +68,8 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/signout',authorization, async (req, res, next) => {
-
+    jwt.destroy(req.token);
+    return res.status(200).json({ token, message: "successful" });
 });
 
 module.exports = router;
