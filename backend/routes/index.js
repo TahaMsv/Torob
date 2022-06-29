@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 router.use('/auth', require('./auth'));
-router.use('/products', require('./product'));
-router.use('/normalUsers', require('./normaluser'));
-router.use('/allUsers', require('./user'));
-router.use('/shopowners', require('./shopowner'));
-router.use('/reports', require('./report'));
+router.use('/product', require('./products'));
+router.use('/normaluser', require('./normalUsers'));
+router.use('/user', require('./allUsers'));
+router.use('/shopowner', require('./shopOwners'));
+router.use('/report', require('./reports'));
 
 
 module.exports = router;
