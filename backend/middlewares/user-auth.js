@@ -7,7 +7,7 @@ function checkAuthorization(req, res, next) {
     if (authParts[0] === 'Bearer') {
         try {
             const decodedToken = jwt.verify(authParts[1], "secret");
-            req.user = decodedToken.userId;
+            req.user = decodedToken;
             req.token = authParts[1];
         } catch(err) {
             return res.status(400).json({error: {message: "Authentication failed"}});
