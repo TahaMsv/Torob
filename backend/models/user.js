@@ -15,7 +15,7 @@ userSchema.methods.getJWT = function () {
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
     return jwt.sign({
-        userId: this._id,
+        userId: this.id,
         email: this.email,
         exp: parseInt(exp.getTime() / 1000),
     }, "secret");

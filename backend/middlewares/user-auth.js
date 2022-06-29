@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 function checkAuthorization(req, res, next) {
     if (!req.headers.authorization) 
-        return res.status(400).json({error: {message: "Bad Request!"}});
+        return res.status(400).json({error: {message: "Token in NULL"}});
     const authParts =  req.headers.authorization.split(" ");
     if (authParts[0] === 'Bearer') {
         try {
@@ -10,8 +10,7 @@ function checkAuthorization(req, res, next) {
             req.user = decodedToken.userId;
             req.token = authParts[1];
         } catch(err) {
-            console.log(err)
-            return res.status(400).json({error: {message: "Bad Request!"}});
+            return res.status(400).json({error: {message: "Authentication failed"}});
         }
     }
     return next();
