@@ -19,7 +19,8 @@ router.put('/update', authorization, function (req, res, next) {
     user.phone = phone;
     user.password = password;
     user.save();
-    res.send('respond with a resource');
+    
+    return res.status(200).json({  message: "successful" });
 });
 
 module.exports = router;
