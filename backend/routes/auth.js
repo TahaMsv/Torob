@@ -38,7 +38,10 @@ router.post('/signup', async (req, res, next) => {
     }
     await newUser.save();
     const token = newUser.getJWT();
-    return res.status(200).json({ token, message: "successful" });
+    return res.status(200).json({
+        token,
+        message: "successful"
+    });
 });
 
 router.post('/login', async (req, res, next) => {
@@ -67,7 +70,7 @@ router.post('/login', async (req, res, next) => {
     return error(res, "email doesn't exists", 401);
 });
 
-router.post('/signout',authorization, async (req, res, next) => {
+router.post('/signout', authorization, async (req, res, next) => {
     jwt.destroy(req.token);
     return res.status(200).json({ token, message: "successful" });
 });

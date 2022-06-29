@@ -5,7 +5,7 @@ const error = require("../utilities/errorFunction");
 const authorization = require('../middlewares/user-auth');
 
 
-router.put('/update', authorization, function (req, res, next) {
+router.put('/update', authorization, function async(req, res, next) {
     const { email, name, phone, password } = req.body;
     if (!name || !email || !password || !phone) {
         return error(res, "Name, email, phone or password is empty", 400);

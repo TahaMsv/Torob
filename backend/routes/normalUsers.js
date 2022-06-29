@@ -6,7 +6,7 @@ const error = require("../utilities/errorFunction");
 const authorization = require('../middlewares/user-auth');
 
 /* GET users listing. */
-router.put('/addfavorite', authorization, function (req, res, next) {
+router.put('/addfavorite', authorization, function async(req, res, next) {
   const { productId } = req.body;
   if (!productId) return error(res, "productId is empty", 400);
   const normalUser = await(NormalUser.findOne({ emial: req.user.email }));
@@ -16,7 +16,7 @@ router.put('/addfavorite', authorization, function (req, res, next) {
   return res.status(200).json({ token, message: "successful" });
 });
 
-router.delete('/removefavorite', authorization, function (req, res, next) {
+router.delete('/removefavorite', authorization, function async(req, res, next) {
   const { productId } = req.body;
   if (!productId) return error(res, "productId is empty", 400);
   const normalUser = await(NormalUser.findOne({ emial: req.user.email }));
@@ -27,7 +27,7 @@ router.delete('/removefavorite', authorization, function (req, res, next) {
   return res.status(200).json({ token, message: "successful" });
 });
 
-router.put('/addlatest', authorization, function (req, res, next) {
+router.put('/addlatest', authorization, function async(req, res, next) {
   const { productId } = req.body;
   if (!productId) return error(res, "productId is empty", 400);
   const normalUser = await(NormalUser.findOne({ emial: req.user.email }));
@@ -44,7 +44,7 @@ router.put('/addlatest', authorization, function (req, res, next) {
   return res.status(200).json({ token, message: "successful" });
 });
 
-router.get('/favorites', authorization, function (req, res, next) {
+router.get('/favorites', authorization, function async(req, res, next) {
   const normalUser = await(NormalUser.findOne({ emial: req.user.email }));
 
   const favoritesList = normalUser.favoriteProducts.map(async productId => {
@@ -60,7 +60,7 @@ router.get('/favorites', authorization, function (req, res, next) {
   return res.status(200).json(favoritesList);
 });
 
-router.get('/latest', authorization, function (req, res, next) {
+router.get('/latest', authorization, function async(req, res, next) {
   const normalUser = await(NormalUser.findOne({ emial: req.user.email }));
 
   const favoritesList = normalUser.latestProducts.map(async productId => {
