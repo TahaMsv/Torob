@@ -8,9 +8,9 @@ const authorization = require('../middlewares/user-auth');
 /* GET users listing. */
 router.put('/addfavorite', authorization, function (req, res, next) {
   const { productId } = req.body;
-  if (!productId) return error(res, "productId is empty");
+  if (!productId) return error(res, "productId is empty", 400);
   const normalUser = await(NormalUser.findOne({ emial: req.user.email }));
-  if (normalUser.favoriteProducts.includes(productId)) return error(res, "this product is already in favorites list");
+  if (normalUser.favoriteProducts.includes(productId)) return error(res, "this product is already in favorites list", 400);
   normalUser.favoriteProducts.unshift(productId);
   normalUser.save();
   return res.status(200).json({ token, message: "successful" });
@@ -18,9 +18,9 @@ router.put('/addfavorite', authorization, function (req, res, next) {
 
 router.delete('/removefavorite', authorization, function (req, res, next) {
   const { productId } = req.body;
-  if (!productId) return error(res, "productId is empty");
+  if (!productId) return error(res, "productId is empty", 400);
   const normalUser = await(NormalUser.findOne({ emial: req.user.email }));
-  if (!normalUser.favoriteProducts.includes(productId)) return error(res, "this product is not in favorites list");
+  if (!normalUser.favoriteProducts.includes(productId)) return error(res, "this product is not in favorites list", 400);
   var productIndex = normalUser.favoriteProducts.indexOf(productId);
   normalUser.favoriteProducts.splice(productIndex, 1);
   normalUser.save();
@@ -29,7 +29,7 @@ router.delete('/removefavorite', authorization, function (req, res, next) {
 
 router.put('/addlatest', authorization, function (req, res, next) {
   const { productId } = req.body;
-  if (!productId) return error(res, "productId is empty");
+  if (!productId) return error(res, "productId is empty", 400);
   const normalUser = await(NormalUser.findOne({ emial: req.user.email }));
   if (normalUser.latestProducts.includes(productId)) {
     var productIndex = normalUser.latestProducts.indexOf(productId);

@@ -22,7 +22,7 @@ userSchema.methods.getJWT = function () {
 };
 
 userSchema.methods.validatePassword = function (password) {
-    if (this.password !== password) return error(res, "Password is wrong");
+    if (this.password !== password) return error(res, "wrong password", 400);
 };
 
 
