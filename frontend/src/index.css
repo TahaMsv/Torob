@@ -14,10 +14,12 @@
 }
 
 * {
+  direction: rtl;
   margin: 0;
   padding: 0;
   border: 0;
   font-family: 'Bahij Yekan', sans-serif, Roboto;
+  font-size: 16px;
 }
 
 body {

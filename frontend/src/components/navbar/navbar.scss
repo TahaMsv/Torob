@@ -1,3 +1,36 @@
 .navbar {
-    
+    display: flex;
+    justify-content: space-between; 
+    border-bottom: 1px var(--gray) solid;
+
+    .product-categories-section {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        svg {
+            margin-left: 5px;
+            margin-right: 1em;
+        }
+    }
+
+    .buttons {
+        button {
+            margin: 0.5em 1em;
+            padding: 0.3em 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            
+        }
+
+        .login-btn {
+            background-color: var(--light-green);
+            color: white;
+        }
+        
+        .signup-btn {
+            border: var(--dark-green) 1px solid;
+            background: none;
+        }
+    }
 }

@@ -2,19 +2,38 @@ import React from "react";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import Categories from '../categories/categories';
+import { Link } from "react-router-dom";
+import "./navbar.scss";
 
 export default class Navbar extends React.Component {
+    state={
+        showCategories: false,
+    }
+
+    onCategoryHover() {
+        this.setState({showCategories: !this.state.showCategories});
+    }
     render() {
         return (
-            <nav className="navbar">
-                <div>
-                    <FontAwesomeIcon icon={faBars} />
-                    <p>دسته بندی کالاها</p>
-                </div>
-                <Categories />
-                <button>ورود</button>
-                <button>ثبت نام</button>
-            </nav>
+            <div>
+                <nav className="navbar">
+                    <div className="product-categories-section" onClick={() => this.onCategoryHover()}>
+                        <FontAwesomeIcon icon={faBars} />
+                        <p>دسته بندی کالاها</p>
+                    </div>
+                    
+                    <div className="buttons">
+                        <Link to="/login">
+                            <button className="login-btn">ورود</button>
+                        </Link>
+                        <Link to="/signup">
+                            <button className="signup-btn">ثبت نام</button>
+                        </Link>
+                    </div>
+
+                </nav>
+                <Categories show={this.state.showCategories}/>
+            </div>
         );
     }
 }

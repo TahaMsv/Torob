@@ -1,3 +1,47 @@
 .main-page {
-    
+    .searchbar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgb(196 196 196);
+        padding: 0 15px;
+        border-radius: 5px;
+        width: 35%;
+
+        input {
+            width: 100%;
+            height: 3em;
+            outline: 0;
+            font-size: 120%;
+        }
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+
+        img {
+            width: 10em;
+        }
+
+        p {
+            font-size: 120%;
+        }
+
+        h1 {
+            color: var(--dark-green);
+            font-size: 300%;
+            text-align: right;
+        }
+    }
+}
+
+.main-page > main {
+    min-height: 100%;
+    margin-top: 10em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
