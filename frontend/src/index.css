@@ -1,13 +1,29 @@
+:root {
+  --light-green: rgb(65, 205, 82);
+  --dark-green: rgb(46, 173, 61);
+  --gray: rgb(243, 243, 244);
+}
+
+@font-face {
+  font-family: 'Bahij Yekan';
+  src: url('./assets/fonts/BahijYekan-Regular.woff2') format('woff2'),
+      url('./assets/fonts/BahijYekan-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: 'Bahij Yekan', sans-serif, Roboto;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Bahij Yekan', sans-serif, Roboto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}

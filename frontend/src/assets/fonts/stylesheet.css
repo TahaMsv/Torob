@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Bahij Yekan';
+    src: url('BahijYekan-Regular.woff2') format('woff2'),
+        url('BahijYekan-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
