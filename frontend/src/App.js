@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import SignUp from './components/sign-up/sign-up';
 import Login from './components/login/login';
 import ResultItems from './components/result-items/result-items';
+import ProductPage from './components/product-page/product-page';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={Login} />
           <Route path='/search' component={ResultItems} />
+          <Route path={'/product/:id'} component={ProductPage} />
         </Switch>
       </BrowserRouter>
     </div>

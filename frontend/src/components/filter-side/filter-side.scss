@@ -1,5 +1,6 @@
 .filter-side {
     text-align: right;
+    padding: 0 10px;
     h2 {
         font-size: 150%;
         font-weight: 500;
@@ -23,6 +24,7 @@
             height: 40px;
             border-radius: 5px;
             margin-top: 1.5em;
+            cursor: pointer;
         }
     }
 

@@ -4,9 +4,11 @@
     background-color: white;
     border-radius: 3px;
     padding: 10px;
+    cursor: pointer;
+    color: black;
     >img {
-        width: 230px;
-        height: 230px;
+        width: 210px;
+        height: 210px;
         object-fit: cover;
     }
 
