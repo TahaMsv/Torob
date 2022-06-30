@@ -1,3 +1,30 @@
 .result-item {
-    
+    width: max-content;
+    justify-self: center;
+    background-color: white;
+    border-radius: 3px;
+    padding: 10px;
+    >img {
+        width: 230px;
+        height: 230px;
+        object-fit: cover;
+    }
+
+    h3 {
+        font-weight: 500;
+        font-size: 130%;
+        text-align: right;
+    }
+
+    .price-heart {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        >img {
+            width: 30px;
+        }
+        >p {
+            font-size: 120%;
+        }
+    }
 }

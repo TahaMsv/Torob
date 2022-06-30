@@ -1,0 +1,39 @@
+.filter-side {
+    text-align: right;
+    h2 {
+        font-size: 150%;
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .price-filter {
+        margin: 0.5em 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        button {
+            width: 90%;
+            background-color: var(--light-green);
+            color: white;
+            margin: auto;
+            width: 97%;
+            height: 40px;
+            border-radius: 5px;
+            margin-top: 1.5em;
+        }
+    }
+
+    input[type=number] {
+        outline: 0;
+        border: 1px solid gray;
+        border-radius: 3px;
+        width: 40%;
+        padding: 5px;
+        margin-right: 4px;
+        margin-left: 4px;
+    }
+
+}

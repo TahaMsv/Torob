@@ -4,7 +4,15 @@ import './sign-up.scss';
 export default class SignUp extends React.Component {
     state={
         currentTab: 'normal',
+        email: '', 
+        name: '', 
+        password: '',
+        phone: 0,
     };
+
+    onSubmitForm(usertype) {
+        // fetch('localhost://')
+    }
 
     render() {
         return (
@@ -23,35 +31,47 @@ export default class SignUp extends React.Component {
                             <div className="signup-content">
                                 <h3>عضویت در کاربران عادی</h3>
                                 <label for="useremail">ایمیل</label>
-                                <input id="useremail" type="email"/>
+                                <input onChange={(e) => this.setState({email: e.target.value})} 
+                                    id="useremail" type="email"/>
 
                                 <label for="username">نام و نام خانوادگی</label>
-                                <input id="username" type="text" />
+                                <input onChange={(e) => this.setState({name: e.target.value})} 
+                                     id="username" type="text" />
 
                                 <label for="userpassword">گذرواژه</label>
-                                <input id="userpassword" type="password"/>
+                                <input onChange={(e) => this.setState({password: e.target.value})}
+                                      id="userpassword" type="password"/>
 
                                 <label for="userphone">شماره تلفن</label>
-                                <input id="userphone" type="tel" />
+                                <input onChange={(e) => this.setState({phone: +(e.target.value)})} 
+                                     id="userphone" type="tel" />
 
-                                <button className="submit-btn">ثبت نام به عنوان کاربر عادی</button>
+                                <button className="submit-btn" onClick={() => this.onSubmitForm('normal')}>
+                                    ثبت نام به عنوان کاربر عادی
+                                </button>
                             </div>
                         ) : (
                             <div className="signup-content">
                                 <h3>عضویت در فروشندگان</h3>
                                 <label for="shopemail">ایمیل سازمان</label>
-                                <input id="shopemail" type="email"/>
+                                <input onChange={(e) => this.setState({email: e.target.value})} 
+                                     id="shopemail" type="email"/>
 
                                 <label for="shopname">نام و نام خانوادگی</label>
-                                <input id="shopname" type="text" />
+                                <input onChange={(e) => this.setState({name: e.target.value})} 
+                                     id="shopname" type="text" />
 
                                 <label for="shoppassword">گذرواژه</label>
-                                <input id="shoppassword" type="password"/>
+                                <input onChange={(e) => this.setState({password: e.target.value})} 
+                                     id="shoppassword" type="password"/>
 
                                 <label for="shopphone">شماره تلفن</label>
-                                <input id="shopphone" type="tel" />
+                                <input onChange={(e) => this.setState({phone: e.target.value})} 
+                                     id="shopphone" type="tel" />
 
-                                <button className="submit-btn">ثبت نام به عنوان فروشنده</button>
+                                <button onClick={() => this.onSubmitForm('seller')} className="submit-btn">
+                                    ثبت نام به عنوان فروشنده
+                                </button>
                             </div>
                         )
                     }

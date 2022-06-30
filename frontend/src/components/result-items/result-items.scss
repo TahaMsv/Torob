@@ -1,3 +1,18 @@
 .result-items {
-    
+    background-color: var(--gray);
+    display: flex;
+    height: 100%;
+    padding-bottom: 30px;
+    >aside {
+        flex: 1;
+        border-left: 1px solid #cccccc;
+    }
+    >main {
+        flex: 3.7;
+    }
+    .items {
+        display: grid;
+        gap: 1em;
+        grid-template-columns: repeat(4, auto);
+    }
 }
