@@ -33,7 +33,7 @@ router.get('/:shop_id', authorization, function async(req, res, next) {
   const store = await(Store.findOne({ id: shopId }));
   if (!store) return error(res, "requested shop not found", 400);
 
-  const storeOwner = await(StoreOwner.findOne({ emial: req.user.email }));
+  const storeOwner = await(StoreOwner.findOne({ email: req.user.email }));
   if (!storeOwner) return error(res, "Store owner not found", 401);
 
   var OwnerOfThisShop = false;

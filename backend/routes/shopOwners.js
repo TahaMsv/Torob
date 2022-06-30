@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 const Store = mongoose.model('Store');
 const StoreOwner = mongoose.model('StoreOwner');
-const AdminUser = mongoose.model('AdminUser');
-const User = mongoose.model('User');
 const authorization = require('../middlewares/user-auth');
 
 
