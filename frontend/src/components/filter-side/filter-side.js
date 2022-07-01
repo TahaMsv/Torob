@@ -19,9 +19,9 @@ export default class FilterSide extends React.Component {
                         {this.state.showPriceFilter ? (
                             <div className="price-filter">
                                 <div>
-                                    <label for="from">از</label>
+                                    <label htmlFor="from">از</label>
                                     <input id="from" type="number"/>
-                                    <label for="to">تا</label>
+                                    <label htmlFor="to">تا</label>
                                     <input id="to" type="number"/>
                                 </div>
                                 <button>اعمال فیلتر قیمت</button>

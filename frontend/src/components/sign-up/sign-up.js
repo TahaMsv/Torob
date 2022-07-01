@@ -96,25 +96,25 @@ export default class SignUp extends React.Component {
                                 {this.state.emailAlreadyExistsErr ? <p className='invalid'>کاربری با این ایمیل قبلا ثبت نام شده</p> : ''}
                                 {this.state.emptyFieldErr ? <p className='invalid'>یکی از ورودی ها خالی است</p> : ''}
 
-                                <label for="useremail">ایمیل</label>
+                                <label htmlFor="useremail">ایمیل</label>
                                 <input onChange={(e) => this.onMailChange(e.target.value)} 
                                     id="useremail" type="email"/>
                                 {!this.validateEmail(this.state.email) && this.state.email !== ''
                                  ? <p className="invalid">ایمیل نامعتبر</p> 
                                 : ''}
 
-                                <label for="username">نام و نام خانوادگی</label>
+                                <label htmlFor="username">نام و نام خانوادگی</label>
                                 <input onChange={(e) => this.setState({name: e.target.value})} 
                                      id="username" type="text" />
 
-                                <label for="userpassword">گذرواژه</label>
+                                <label htmlFor="userpassword">گذرواژه</label>
                                 <input onChange={(e) => this.setState({password: e.target.value})}
                                       id="userpassword" type="password"/>
                                 {!this.validatePassword(this.state.password) && this.state.password !== ''
                                  ? <p className="invalid">گذرواژه نامعتبر</p> 
                                 : ''}
 
-                                <label for="userphone">شماره تلفن</label>
+                                <label htmlFor="userphone">شماره تلفن</label>
                                 <input onChange={(e) => this.setState({phone: +(e.target.value)})} 
                                      id="userphone" type="tel" />
 
@@ -125,18 +125,18 @@ export default class SignUp extends React.Component {
                         ) : (
                             <div className="signup-content">
                                 <h3>عضویت در فروشندگان</h3>
-                                <label for="shopemail">ایمیل سازمان</label>
+                                <label htmlFor="shopemail">ایمیل سازمان</label>
                                 <input onChange={(e) => this.onMailChange(e.target.value)} 
                                      id="shopemail" type="email"/>
                                 {!this.validateEmail(this.state.email) && this.state.email !== ''? 
                                     <p className="invalid">ایمیل نامعتبر</p> 
                                 : ''}
 
-                                <label for="shopname">نام و نام خانوادگی</label>
+                                <label htmlFor="shopname">نام و نام خانوادگی</label>
                                 <input onChange={(e) => this.setState({name: e.target.value})} 
                                      id="shopname" type="text" />
 
-                                <label for="shoppassword">گذرواژه</label>
+                                <label htmlFor="shoppassword">گذرواژه</label>
                                 <input onChange={(e) => this.setState({password: e.target.value})} 
                                      id="shoppassword" type="password"/>
                                 
@@ -144,7 +144,7 @@ export default class SignUp extends React.Component {
                                  ? <p className="invalid">گذرواژه نامعتبر</p> 
                                 : ''}
 
-                                <label for="shopphone">شماره تلفن</label>
+                                <label htmlFor="shopphone">شماره تلفن</label>
                                 <input onChange={(e) => this.setState({phone: e.target.value})} 
                                      id="shopphone" type="tel" />
 

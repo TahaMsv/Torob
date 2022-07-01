@@ -4,12 +4,12 @@ const ReportPage = (props) => (
     <div className="report-wrapper" style={{display: props.show ? 'flex' : 'none'}}>
             <div className="report-content">
                 <div className="report-body">
-                    <label for="reportType">نوع گزارش:</label>
+                    <label htmlFor="reportType">نوع گزارش:</label>
                     <select id="reportType">
                         <option>ثبت تخلف</option>
                         <option>قیمت خارج محدوده</option>
                     </select>
-                    <label for="report-content">متن گزارش</label>
+                    <label htmlFor="report-content">متن گزارش</label>
                     <textarea id="report-content"></textarea>
                 </div>
                 <div className="buttons">

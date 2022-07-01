@@ -54,13 +54,13 @@ export default class Login extends React.Component {
                 <div className="login-form">
                     {this.state.isWrongPassword ? <p className="invalid">گذرواژه اشتباه است</p> : ''}
                     {this.state.emailNotExists ? <p className="invalid">ایمیل وجود ندارد</p> : ''}
-                    <label for="email">ایمیل</label>
+                    <label htmlFor="email">ایمیل</label>
                     <input id="email" type="email" onChange={(e) => this.setState({email: e.target.value})}/>
-                    <label for="password">گذرواژه</label>
+                    <label htmlFor="password">گذرواژه</label>
                     <input id="password" type="password" onChange={(e) => this.setState({password: e.target.value})}/>
 
                     <div className="checkbox-container">
-                        <label for="asShop" >ورود به عنوان فروشنده</label>
+                        <label htmlFor="asShop" >ورود به عنوان فروشنده</label>
                         <input type="checkbox" id="asShop" onChange={(e) => this.checkBoxChange(e.target.checked)}/>
                     </div>
                     <button onClick={() => this.fetchLogin()} className="submit-btn">ورود</button>

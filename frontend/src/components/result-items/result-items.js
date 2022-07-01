@@ -12,11 +12,21 @@ export default class ResultItems extends React.Component {
         sortby: 'new'
     }
 
-    sendSearchReq(value) {
-        fetch(`localhost/search?value=${value}`)
+    constructor(props) {
+        super(props);
+    }
+
+    sendSearchReq(searchValue, type, sortby) {
+        const url = `http://127.0.0.1:3002/search?${searchValue ? 'value='+searchValue:''}${type ? 'type='+type:''}${sortby ? 'sortby='+sortby:''}`;
+        fetch(url, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
         .then((res) => {
-            if (res.ok) return res.json();
-            throw new Error("Cannot Connect to Server");
+            return res.json();
         })
         .then((json) => {
             this.setState({ resultItems: json });
@@ -27,8 +37,13 @@ export default class ResultItems extends React.Component {
     }
 
     componentDidMount() {
-        const searchValue = this.props.match.params.value;
-        // this.sendSearchReq(searchValue);
+        const search = this.props.location.search;
+
+        const searchValue = new URLSearchParams(search).get('value');
+        const type = new URLSearchParams(search).get('type');
+        const sortby = new URLSearchParams(search).get('sortby');
+        
+        this.sendSearchReq(searchValue, type, sortby);
         const mockValue = [
             {
                 id: 3,
@@ -70,7 +85,7 @@ export default class ResultItems extends React.Component {
             }
         ];
 
-        this.setState({resultItems: mockValue});
+        // this.setState({resultItems: mockValue});
 
     }
 
@@ -82,7 +97,6 @@ export default class ResultItems extends React.Component {
     }
 
     changeSort(sortby) {
-        console.log(sortby);
         this.setState({sortby});
     }
 
@@ -94,18 +108,27 @@ export default class ResultItems extends React.Component {
                     <aside>
                         <FilterSide />
                     </aside>
-                    <main>
-                        <SortBy sortby={this.state.sortby} changeSort={(sortby) => this.changeSort(sortby)}/>
-                        <div className="items">
-                            {this.state.resultItems.map((item) =>(
-                                <Link key={item.id} to={`/product/${item.id}`} style={{textDecoration: "none"}}>
-                                    <ResultItem img={item.img} productTitle={item.name} price={item.leastPrice}
-                                        isFavorited={item.isFavorited} onFavoriteChanged={() => this.onFavoriteChange(item.id)}/>
-                                </Link>
-                                )
-                            )}
-                        </div>
-                    </main>
+                    {
+                        this.state.resultItems.length > 0 ? (
+                            <main>
+                                <SortBy sortby={this.state.sortby} changeSort={(sortby) => this.changeSort(sortby)}/>
+                                <div className="items">
+                                    {this.state.resultItems.map((item) =>(
+                                        <Link key={item.id} to={`/product/${item.id}`} style={{textDecoration: "none", width: 'fit-content'}}>
+                                            <ResultItem img={item.img} productTitle={item.name} price={item.leastPrice}
+                                                isFavorited={item.isFavorited} onFavoriteChanged={() => this.onFavoriteChange(item.id)}/>
+                                        </Link>
+                                        )
+                                    )}
+                                </div>
+                            </main>
+                        ) : (
+                            <main>
+                                <p className="no-result">نتیجه ای یافت نشد!</p>
+                            </main>
+                        )
+                    }
+                    
                 </div>
             </div>
         );

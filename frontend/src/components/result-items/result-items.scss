@@ -1,3 +1,7 @@
+.result-items-container {
+    min-height: 100%;
+    height: 100%;
+}
 .result-items {
     background-color: var(--gray);
     display: flex;
@@ -9,6 +13,10 @@
     }
     >main {
         flex: 3.2;
+        .no-result {
+            margin-top: 5em;
+            font-size: 200%;
+        }
     }
     .items {
         display: grid;

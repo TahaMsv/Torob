@@ -12,7 +12,6 @@ export default class Navbar extends React.Component {
     }
 
     componentDidMount() {
-        console.log(localStorage.getItem('token'))
         this.setState({isUserLoggedIn: localStorage.getItem('isUserLoggedIn')});
     }
 

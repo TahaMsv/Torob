@@ -15,16 +15,18 @@ export default class Categories extends React.Component {
     }
 
     fetchSearchCategory(category) {
-        fetch(`http://127.0.0.1:3002/search?type=${category}`, {
-        method: "GET",
+        // fetch(`http://127.0.0.1:3002/search?type=${category}`, {
+        // method: "GET",
         
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'), 
-            "Content-type": "application/json; charset=UTF-8"
-        }
-        })
-        .then(response => response.json())
-        .then(json => console.log(json));
+        // headers: {
+        //     'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+        //     "Content-type": "application/json; charset=UTF-8"
+        // }
+        // })
+        // .then(response => response.json())
+        // .then(json => console.log(json));
+
+        window.location.href = `http://127.0.0.1:3001/search?type=${category}`;
     }
 
     render() {
