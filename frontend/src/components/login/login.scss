@@ -13,6 +13,14 @@
         width: 40%;
         padding-top: 10px;
 
+        .invalid {
+            text-align: right;
+            background-color: var(--alert-red);
+            color: red;
+            margin: 0 15px;
+            padding: 2px 5px;
+        }
+
         input {
             outline: none;
             margin: 10px 15px;

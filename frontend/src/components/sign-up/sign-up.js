@@ -36,7 +36,9 @@ export default class SignUp extends React.Component {
         .then((json) => {
             if (json.message === 'successful') {
                 localStorage.setItem('token', json.token);
+                localStorage.setItem('isUserLoggedIn', true);
                 this.setState({emailAlreadyExistsErr: false, emptyFieldErr: false});
+                window.location.href = 'http://127.0.0.1:3001/';
             } else {
                 if (json.error.message.startsWith('Email')) {
                     this.setState({emailAlreadyExistsErr: true, emptyFieldErr: false});

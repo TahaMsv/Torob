@@ -11,9 +11,21 @@ export default class Navbar extends React.Component {
         isUserLoggedIn: false,
     }
 
+    componentDidMount() {
+        console.log(localStorage.getItem('token'))
+        this.setState({isUserLoggedIn: localStorage.getItem('isUserLoggedIn')});
+    }
+
     onCategoryHover() {
         this.setState({showCategories: !this.state.showCategories});
     }
+
+    onLogoutClicked() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('isUserLoggedIn');
+        this.setState({isUserLoggedIn: false});
+    }
+
     render() {
         return (
             <div>
@@ -43,9 +55,7 @@ export default class Navbar extends React.Component {
                                     <Link to="/profile">
                                         <button className="signup-btn">پروفایل</button>
                                     </Link>
-                                    <Link>
-                                        <button className="login-btn">خروج</button>
-                                    </Link>
+                                    <button onClick={() => this.onLogoutClicked()} className="login-btn">خروج</button>
                                 </div>
                             )
                         }
