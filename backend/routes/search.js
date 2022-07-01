@@ -20,7 +20,6 @@ router.get('/', authorization, async function (req, res, next) {
     let returndList;
     if (products) {
         returndList = products.map(product => {
-
             let leastPrice = 1.797693134862315E+308;
             product.stores.map(store =>{
                 if(store["suggestedPrice"] < leastPrice) leastPrice = store["suggestedPrice"];
@@ -44,7 +43,6 @@ router.get('/', authorization, async function (req, res, next) {
         });
     }
 
-    console.log(sortby);
     if (returndList) {
         if (sortby === "newest") {
             returndList = returndList.sort((p1, p2) => p2.id - p1.id);
