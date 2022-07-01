@@ -3,17 +3,19 @@ const mongoose = require('mongoose');
 const productSchema = mongoose.Schema({
   id: { type: Number, unique: true },
   name: { type: String },
-  type: { type: mongoose.Schema.Types.ObjectId, ref: 'Type' },
+  type: { type: String },
   imageUrl: { type: String },
+  dateAdded: { type: Date,  default: Date.now() },
+  link: { type: String },
   details: {
     type: Map,
     of: String
   },
-  stores: {
-    type: [{
+  stores: {                          //{ "shopId":  }
+    type: {
       type: Map,
       of: String
-    },], default: []
+    }, default: {}
   },
 });
 

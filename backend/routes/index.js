@@ -7,6 +7,7 @@ router.use('/normaluser', require('./normalUsers'));
 router.use('/user', require('./allUsers'));
 router.use('/shopowner', require('./shopOwners'));
 router.use('/report', require('./reports'));
+router.use('/search', require('./search'));
 
 
 module.exports = router;

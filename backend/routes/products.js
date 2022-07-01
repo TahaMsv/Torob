@@ -8,9 +8,9 @@ const Type = mongoose.model('Type');
 const authorization = require('../middlewares/user-auth');
 
 
-router.post('/create', authorization,async function (req, res, next) {
+router.post('/create', authorization, async function (req, res, next) {
     const { name, shopId, suggestedPrice, details, img, link, productType } = req.body;
-    const owner = await(StoreOwner.findOne({ email: req.user.email }));
+    const owner = await (StoreOwner.findOne({ email: req.user.email }));
     if (owner) {
         const productId = await Product.count() + 1;
         const product = new Product({
@@ -18,12 +18,12 @@ router.post('/create', authorization,async function (req, res, next) {
             name,
             type: productType,
             imageUrl: img,
-            details
+            details,
+            link
         });
-        product.stores.push({
-            shopId: suggestedPrice
-        })
-        const store = await(Store.findOne({ id: shopId }));
+        product.stores[shopId] = suggestedPrice;
+
+        const store = await (Store.findOne({ id: shopId }));
         store.products.push(productId);
 
         product.save();
@@ -36,17 +36,19 @@ router.post('/create', authorization,async function (req, res, next) {
     return error(res, "permission denied", 400);
 });
 
-router.post('/addstore', authorization,async function (req, res, next) {
+router.post('/addstore', authorization, async function (req, res, next) {
     const { productId, shopId, suggestedPrice } = req.body;
-    const owner = await(StoreOwner.findOne({ email: req.user.email }));
+    const owner = await (StoreOwner.findOne({ email: req.user.email }));
     if (owner) {
-        const store = await(Store.findOne({ id: shopId }));
-        const product = await(Product.findOne({ id: productId }));
+        const store = await (Store.findOne({ id: shopId }));
+        const product = await (Product.findOne({ id: productId }));
 
+        if (Object.keys(product.stores).length == 0) { product.dateAdded = Date.now(); }
         product.stores.push({
             shopId: suggestedPrice
-        })
-        store.products.push(productId);
+        });
+
+        product.stores[shopId] = suggestedPrice;
         product.save();
         store.save();
         return res.status(200).json({
@@ -58,9 +60,9 @@ router.post('/addstore', authorization,async function (req, res, next) {
 });
 
 
-router.get('/:product_id', authorization,async function (req, res, next) {
+router.get('/:product_id', authorization, async function (req, res, next) {
     const productId = req.params.product_id;
-    const product = await(Product.findOne({ id: productId }));
+    const product = await (Product.findOne({ id: productId }));
     if (!product) return error(res, "this product doesn't exists", 400);
 
     const storesList = await product.stores.map(async storeId => {
@@ -70,7 +72,7 @@ router.get('/:product_id', authorization,async function (req, res, next) {
                 "id": store.id,
                 "name": store.name,
                 "city": store.city,
-                "sellingPrice": product.stores[store.id],  
+                "sellingPrice": product.stores[store.id],
             };
         }
     });
@@ -79,7 +81,7 @@ router.get('/:product_id', authorization,async function (req, res, next) {
         id: product.id,
         name: product.name,
         img: product.imageUrl,
-        productType: "laptop|lenovo",  // باید محاسبه بشه
+        productType: product.type,
         details: product.details,
         stores: storesList
     });
