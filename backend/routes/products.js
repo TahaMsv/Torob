@@ -16,14 +16,25 @@ router.post('/create', authorization, async function (req, res, next) {
         if (owner.stores.includes(shopId)) {
             const store = await (Store.findOne({ id: shopId }));
             const sameProduct = await (Product.findOne({ name }));
+
             if (sameProduct) {
-                sameProduct.stores.push(
-                    {
-                        shopId,
-                        suggestedPrice
+                let updatePrice = false;
+                sameProduct.stores.map(s => {
+                    if (s["shopId"] == shopId) {
+                        s["suggestedPrice"] = suggestedPrice;
+                        updatePrice = true;
                     }
-                );
-                store.products.push(sameProduct.id);
+                })
+                if (!updatePrice) {
+                    sameProduct.stores.push(
+                        {
+                            shopId,
+                            suggestedPrice
+                        }
+                    );
+                }
+
+                if (!store.products.includes(sameProduct.id)) store.products.push(sameProduct.id);
 
                 sameProduct.save();
                 store.save();
@@ -42,13 +53,25 @@ router.post('/create', authorization, async function (req, res, next) {
                     details,
                     link
                 });
-                product.stores.push(
-                    {
-                        shopId,
-                        suggestedPrice
+
+                let updatePrice = false;
+                product.stores.map(s => {
+                    if (s["shopId"] == shopId) {
+                        s["suggestedPrice"] = suggestedPrice;
+                        updatePrice = true;
                     }
-                );
-                store.products.push(productId);
+                })
+                if (!updatePrice) {
+                    product.stores.push(
+                        {
+                            shopId,
+                            suggestedPrice
+                        }
+                    );
+                }
+
+
+                if (!store.products.includes(productId)) store.products.push(productId);
 
                 product.save();
                 store.save();
