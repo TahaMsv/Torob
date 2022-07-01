@@ -17,7 +17,7 @@ export default class ResultItems extends React.Component {
     }
 
     sendSearchReq(searchValue, type, sortby) {
-        const url = `http://127.0.0.1:3002/search?${searchValue ? 'value='+searchValue:''}${type ? 'type='+type:''}${sortby ? 'sortby='+sortby:''}`;
+        const url = `http://127.0.0.1:3002/search?${searchValue ? 'value='+searchValue:''}&${type ? 'type='+type:''}&${sortby ? 'sortby='+sortby:''}`;
         fetch(url, {
             method: "GET",
             headers: {
@@ -42,7 +42,7 @@ export default class ResultItems extends React.Component {
         const searchValue = new URLSearchParams(search).get('value');
         const type = new URLSearchParams(search).get('type');
         const sortby = new URLSearchParams(search).get('sortby');
-        
+        this.setState({sortby})
         this.sendSearchReq(searchValue, type, sortby);
         const mockValue = [
             {
@@ -84,9 +84,6 @@ export default class ResultItems extends React.Component {
                 isFavorited: false
             }
         ];
-
-        // this.setState({resultItems: mockValue});
-
     }
 
     onFavoriteChange(product) {
@@ -97,7 +94,13 @@ export default class ResultItems extends React.Component {
     }
 
     changeSort(sortby) {
+        const search = this.props.location.search;
+        const searchValue = new URLSearchParams(search).get('value');
+        const type = new URLSearchParams(search).get('type');
         this.setState({sortby});
+        window.location.href = `http://127.0.0.1:3001/search?${searchValue ? 'value='+searchValue:''}&${type ? 'type='+type:''}&${'sortby='+sortby}`;
+        this.sendSearchReq(searchValue, type, sortby);
+
     }
 
     render() {
