@@ -17,7 +17,7 @@ router.post('/addstore', authorization, async function (req, res, next) {
             name,
             city
         });
-        
+
         if (!owner.stores.includes(store.id)) owner.stores.push(store.id);
         owner.save();
         store.save();
@@ -30,9 +30,10 @@ router.post('/addstore', authorization, async function (req, res, next) {
 });
 
 
-router.get('/stores', authorization, async function (req, res, next) {
-    const stores = await (Store.findOne({}).sort({ id: 'descending' }));
-    const responseList = stores.map(async store => {
+router.get('/stores', async function (req, res, next) {
+    const stores = await (Store.find({}).sort({ id: "descending" }));
+    console.log(stores);
+    const responseList = stores.map(store => {
         return {
             "id": store.id,
             "name": store.name,
