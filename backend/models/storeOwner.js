@@ -1,10 +1,10 @@
-const extendSchema = require('mongoose-extend-schema');
+// const extendSchema = require('mongoose-extend-schema');
+// const mongoose = require('mongoose');
+// const User = require('../models/user');
 
-const User = mongoose.models('User');
+// const storeOwnerSchema = extendSchema(User, {
+//     phone: { type: String },
+//     stores: { type: [Number], default: [] },
+// });
 
-const storeOwnerSchema = extendSchema(User, {
-    phone: { type: String },
-    stores: { type: [Number], default: [] },
-});
-
-module.exports = mongoose.model('StoreOwner', storeOwnerSchema);
+// module.exports = mongoose.model('StoreOwner', storeOwnerSchema);

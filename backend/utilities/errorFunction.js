@@ -1,5 +1,5 @@
-const error = (res, message) => {
-    return res.status(400).json({ error: { message } });
+const error = (res, message , statusCode) => {
+    return res.status(statusCode).json({ error: { message } });
 }
 
 module.exports = error;

@@ -1,5 +1,6 @@
 var router = require('express').Router();
 const mongoose = require("mongoose");
+const User = mongoose.model('User');
 const NormalUser = mongoose.model('NormalUser');
 const AdminUser = mongoose.model('AdminUser');
 const StoreOwner = mongoose.model('StoreOwner');
@@ -8,68 +9,96 @@ const authorization = require('../middlewares/user-auth');
 const jwt = require('jsonwebtoken');
 
 router.post('/signup', async (req, res, next) => {
-    const { email, name, phone, password, userType } = req.body;
+    const { email, name, phone, password, userType, stores } = req.body;
     if (!name || !email || !password) {
-        return error(res, "Name, email or password is empty");
+        return error(res, "Name, email or password is empty", 400);
     }
     let newUser;
-
     if (userType === "normal") {
         const otherSameUser = await (NormalUser.findOne({ email }));
-        if (otherSameUser) return error(res, "Email already exist");
-        const newUserId = await NormalUser.count();
+        if (otherSameUser) return error(res, "Email already exist", 401);
+        const newUserId = await User.count() + 1;
         newUser = new NormalUser({
-            id: newUserId + 1,
+            id: newUserId,
             name,
             email,
             password,
             phone,
         });
-    } else {
+
+    } else if (userType === "admin") {
         const otherSameUser = await (AdminUser.findOne({ email }));
-        if (otherSameUser) return error(res, "Email already exist");
-        const newUserId = await AdminUser.count();
+        if (otherSameUser) return error(res, "Email already exist", 401);
+        const newUserId = await User.count() + 1;
+        console.log(newUserId);
         newUser = new AdminUser({
-            id: newUserId + 1,
+            id: newUserId,
             name,
             email,
             password,
         });
+    } else if (userType === "shopOwner") {
+        const otherSameUser = await (StoreOwner.findOne({ email }));
+        if (otherSameUser) return error(res, "Email already exist", 401);
+        const newUserId = await User.count() + 1;
+        console.log(newUserId);
+        newUser = new StoreOwner({
+            id: newUserId,
+            name,
+            email,
+            password,
+            phone,
+        });
+        if (stores) {
+            console.log(stores);
+            stores.map(store => newUser.stores.push(store));
+        }
     }
+    else {
+        return error(res, "userType does not exist", 401);
+    }
+
     await newUser.save();
     const token = newUser.getJWT();
-    return res.status(200).json({ token, message: "successful" });
+    return res.status(200).json({
+        token,
+        userType,
+        message: "successful"
+    });
 });
 
 router.post('/login', async (req, res, next) => {
-    const { email, password } = req.body;
-    if (!email || !password) return error(res, "email or password is empty");
+    const { email, password, userType } = req.body;
+    if (!email || !password) return error(res, "email or password is empty", 400);
 
-    const normalUser = await NormalUser.findOne({ email });
-    const adminUser = await AdminUser.findOne({ email });
-    const storeOwner = await StoreOwner.findOne({ email });
-
-    if (normalUser) {
-        normalUser.validatePassword(password);
-        const token = normalUser.getJWT();
-        return res.status(200).json({ token, message: "successful" });
+    if (userType === "normal") {
+        const normalUser = await NormalUser.findOne({ email });
+        if (normalUser) {
+            if (normalUser.password !== password) return error(res, "wrong password", 400);
+            const token = normalUser.getJWT();
+            return res.status(200).json({ token, message: "successful" });
+        }
     }
-    if (adminUser) {
-        adminUser.validatePassword(password);
-        const token = adminUser.getJWT();
-        return res.status(200).json({ token, message: "successful" });
+    else if (userType === "admin") {
+        const adminUser = await AdminUser.findOne({ email });
+        if (adminUser) {
+            if (adminUser.password !== password) return error(res, "wrong password", 400);
+            const token = adminUser.getJWT();
+            return res.status(200).json({ token, userType, userType, message: "successful" });
+        }
     }
-    if (storeOwner) {
-        storeOwner.validatePassword(password);
-        const token = storeOwner.getJWT();
-        return res.status(200).json({ token, message: "successful" });
+    else if (userType === "shopOwner") {
+        const storeOwner = await StoreOwner.findOne({ email });
+        if (storeOwner) {
+            if (storeOwner.password !== password) return error(res, "wrong password", 400);
+            const token = storeOwner.getJWT();
+            return res.status(200).json({ token, userType, message: "successful" });
+        }
     }
-    if (!user) return error(res, "User not found");
-});
-
-router.post('/signout',authorization, async (req, res, next) => {
-    jwt.destroy(req.token);
-    return res.status(200).json({ token, message: "successful" });
+    else {
+        return error(res, "userType does not exist", 401);
+    }
+    return error(res, "email doesn't exists", 401);
 });
 
 module.exports = router;
