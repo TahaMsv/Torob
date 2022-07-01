@@ -69,11 +69,14 @@ router.post('/addstore', authorization, async function (req, res, next) {
         const product = await (Product.findOne({ id: productId }));
 
         if (Object.keys(product.stores).length == 0) { product.dateAdded = Date.now(); }
-        product.stores.push({
-            shopId: suggestedPrice
-        });
-
-        product.stores[shopId] = suggestedPrice;
+        if (!store.products.includes(product.id)) {
+            store.products.push(product.id);
+            product.stores.push({
+                shopId: suggestedPrice
+            });
+        }else{
+            return error(res, "product already exist", 400);
+        }
         product.save();
         store.save();
         return res.status(200).json({
