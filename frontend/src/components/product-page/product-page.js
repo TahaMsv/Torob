@@ -1,5 +1,6 @@
 import React from "react";
 import heartLogo from "../../assets/logo/Ei-heart.svg";
+import Navbar from "../navbar/navbar";
 import ShopList from "../shop-list/shop-list";
 import './product-page.scss';
 
@@ -18,7 +19,6 @@ export default class ProductPage extends React.Component {
         })
         .then((json) => {
             this.setState({ product: json });
-            this.addnewItemToLocal(json);
         })
         .catch((__) => {});
     }
@@ -98,6 +98,7 @@ export default class ProductPage extends React.Component {
     render() {
         return (
             <div className="product-page">
+                <Navbar />
                 <section className="categories-list">
                     {this.state.product.productType ? this.state.product.productType.split('|').map((item) => (
                         <a href="#">{item} {'>'} </a>

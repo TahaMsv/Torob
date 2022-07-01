@@ -7,7 +7,8 @@ const ResultItem = (props) => (
         <img src={props.img}/>
         <h3>{props.productTitle}</h3>
         <div className="price-heart">
-            <p>{props.price.toString()} تومان </p>
+            {props.price ? <p>{props.price.toString()} تومان </p> : ''}
+            
             <img src={props.isFavorited ? redHeartLogo : heartLogo}
                 onClick={props.onFavoriteChanged}/>
         </div>

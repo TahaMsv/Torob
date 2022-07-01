@@ -4,6 +4,7 @@ import ResultItem from '../result-item/result-item';
 import SortBy from "../sorting-by/sorting-by";
 import './result-items.scss';
 import {Link} from "react-router-dom";
+import Navbar from "../navbar/navbar";
 
 export default class ResultItems extends React.Component {
     state = {
@@ -87,22 +88,25 @@ export default class ResultItems extends React.Component {
 
     render() {
         return (
-            <div className="result-items">
-                <aside>
-                    <FilterSide />
-                </aside>
-                <main>
-                    <SortBy sortby={this.state.sortby} changeSort={(sortby) => this.changeSort(sortby)}/>
-                    <div className="items">
-                        {this.state.resultItems.map((item) =>(
-                            <Link key={item.id} to={`/product/${item.id}`} style={{textDecoration: "none"}}>
-                                <ResultItem img={item.img} productTitle={item.name} price={item.leastPrice}
-                                    isFavorited={item.isFavorited} onFavoriteChanged={() => this.onFavoriteChange(item.id)}/>
-                            </Link>
-                            )
-                        )}
-                    </div>
-                </main>
+            <div className="result-items-container">
+                <Navbar />
+                <div className="result-items">
+                    <aside>
+                        <FilterSide />
+                    </aside>
+                    <main>
+                        <SortBy sortby={this.state.sortby} changeSort={(sortby) => this.changeSort(sortby)}/>
+                        <div className="items">
+                            {this.state.resultItems.map((item) =>(
+                                <Link key={item.id} to={`/product/${item.id}`} style={{textDecoration: "none"}}>
+                                    <ResultItem img={item.img} productTitle={item.name} price={item.leastPrice}
+                                        isFavorited={item.isFavorited} onFavoriteChanged={() => this.onFavoriteChange(item.id)}/>
+                                </Link>
+                                )
+                            )}
+                        </div>
+                    </main>
+                </div>
             </div>
         );
     }

@@ -8,6 +8,7 @@ import "./navbar.scss";
 export default class Navbar extends React.Component {
     state={
         showCategories: false,
+        isUserLoggedIn: true,
     }
 
     onCategoryHover() {
@@ -23,12 +24,22 @@ export default class Navbar extends React.Component {
                     </div>
                     
                     <div className="buttons">
-                        <Link to="/login">
-                            <button className="login-btn">ورود</button>
-                        </Link>
-                        <Link to="/signup">
-                            <button className="signup-btn">ثبت نام</button>
-                        </Link>
+                        {
+                            !this.state.isUserLoggedIn ? (
+                                <div>   
+                                    <Link to="/login">
+                                <button className="login-btn">ورود</button>
+                                </Link>
+                                <Link to="/signup">
+                                    <button className="signup-btn">ثبت نام</button>
+                                </Link>
+                                </div>
+                            ) : (
+                                <Link to="/profile">
+                                    <button className="signup-btn">پروفایل</button>
+                                </Link>
+                            )
+                        }
                     </div>
 
                 </nav>

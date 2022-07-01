@@ -1,0 +1,10 @@
+.user-seen-products {
+    h2 {
+        font-size: 150%;
+        font-weight: 500;
+    }
+    .items {
+        display: grid;
+        grid-template-columns: auto auto auto;
+    }
+}
