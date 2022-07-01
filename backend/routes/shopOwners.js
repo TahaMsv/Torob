@@ -7,8 +7,8 @@ const authorization = require('../middlewares/user-auth');
 const error = require("../utilities/errorFunction");
 
 router.post('/addstore', authorization, async function (req, res, next) {
-    const { name, city, ownerId } = req.body;
-    const owner = await (StoreOwner.findOne({ id: ownerId }));
+    const { name, city } = req.body;
+    const owner = await (StoreOwner.findOne({ id: req.user.userId }));
     const storId = await Store.count() + 1;
 
     if (owner) {

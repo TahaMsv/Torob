@@ -25,6 +25,7 @@ export function MyShops() {
             mode: 'cors',
             body: JSON.stringify(store),
             headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
