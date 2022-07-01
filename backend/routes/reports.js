@@ -8,24 +8,25 @@ const User = mongoose.model('User');
 const authorization = require('../middlewares/user-auth');
 const error = require("../utilities/errorFunction");
 
-router.post('/create', async function (req, res, next) {
-  const { userId, shopId, content, type } = req.body;
+router.post('/create', authorization, async function (req, res, next) {
+  const { shopId, content, type } = req.body;
   const store = await(Store.findOne({ id: shopId }));
   if (!store) return error(res, "requested shop not found", 400);
   const reportId = await Report.count() + 1;
+  console.log(req.user);
   const report = new Report({
     id: reportId,
-    userID: userId,
-    content: content,
+    userID: req.user.userId,
+    content,
     shopID: shopId,
-    type: type,
+    type,
   });
 
   store.reports.push(reportId);
   store.save();
   report.save();
   return res.status(200).json({
-    id: report.reportId,
+    id: report.id,
     message: "successful"
   });
 });

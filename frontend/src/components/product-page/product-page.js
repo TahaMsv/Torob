@@ -32,7 +32,7 @@ export default class ProductPage extends React.Component {
     }
 
     fetchAddToFavorite(productId) {
-        
+
     }
 
     setMinMaxPrices(product) {
@@ -136,7 +136,7 @@ export default class ProductPage extends React.Component {
                     <section className="shop-list-wrapper">
                         <h2>لیست فروشگاه‌ها</h2>
                         {this.state.product.stores ? this.state.product.stores.map((store) => 
-                            <ShopList key={store.id} name={store.name} sellingPrice={store.sellingPrice} 
+                            <ShopList key={store.id} id={store.id} name={store.name} sellingPrice={store.sellingPrice} 
                                 city={store.city} link={store.link}/>) : ''}
                     </section>
                     <section className="details-wrapper">

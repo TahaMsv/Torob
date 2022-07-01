@@ -8,8 +8,32 @@ export default class ShopList extends React.Component {
         showModal: false,
     }
 
-    onReportSubmit() {
+    fetchCreateReport(report) {
+        fetch(`http://127.0.0.1:3002/report/create`, {
+            method: "POST",
+            body: JSON.stringify({
+                shopId: this.props.id,
+                content: report.reportContent,
+                type: report.reportType,
+            }),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => {
+            return res.json();
+        })
+        .then((json) => {
+            // console.log(json);
+        })
+        .catch((__) => {});
+    }
+
+    onReportSubmit(report) {
+        this.fetchCreateReport(report);
         this.setState({showModal: false});
+        
     }
 
     render() {
@@ -26,7 +50,7 @@ export default class ShopList extends React.Component {
                 <div className="report-add-btn" onClick={() => this.setState({showModal: true})}>
                     <p >ثبت گزارش</p>
                 </div>
-                <ReportPage show={this.state.showModal} onSubmit={() => this.onReportSubmit()} 
+                <ReportPage show={this.state.showModal} onSubmit={(report) => this.onReportSubmit(report)} 
                     onClose={() => this.setState({showModal: false})}/>
             </div>
         )
