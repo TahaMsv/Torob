@@ -12,12 +12,18 @@ export default class ProductPage extends React.Component {
     };
 
     fetchProduct(productId) {
-        fetch(`localhost/product/${productId}`)
+        fetch(`http://127.0.0.1:3002/product/${productId}`, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
         .then((res) => {
-            if (res.ok) return res.json();
-            else throw new Error("Coin Not Found");
+            return res.json();
         })
         .then((json) => {
+            console.log(json);
             this.setState({ product: json });
         })
         .catch((__) => {});
@@ -41,7 +47,7 @@ export default class ProductPage extends React.Component {
     componentDidMount() {
         const productId = this.props.match.params.id;
 
-        // this.fetchProduct();
+        this.fetchProduct(productId);
         const mockProduct = {
             id: 15,
             name: "iPhone 13 pro max",
@@ -90,7 +96,7 @@ export default class ProductPage extends React.Component {
             ]
         };
 
-        this.setState({product: mockProduct});
+        // this.setState({product: mockProduct});
         this.setMinMaxPrices(mockProduct);
     }
 
