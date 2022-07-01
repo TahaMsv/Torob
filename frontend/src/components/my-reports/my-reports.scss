@@ -1,0 +1,25 @@
+.my-reports {
+    table {
+        width: 100%;
+
+        td, th {
+            padding: 10px 0;
+        }
+
+        th {
+            color: var(--dark-green);
+            border-bottom: 1px solid var(--dark-green);
+            font-size: 110%;
+        }
+
+        td {
+            border-left: 1px solid var(--dark-green);
+        }
+
+        tr:last-of-type {
+            td {
+                border-bottom: 1px solid var(--dark-green);
+            }
+        }
+    }
+}

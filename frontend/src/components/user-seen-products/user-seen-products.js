@@ -37,9 +37,13 @@ export default class UserSeenProducts extends React.Component {
 
     favoriteChangeHandler(product) {
         const productIndex = this.state.products.findIndex((item) => item.id === product);
-        const newProductList = this.state.products;
-        if (newProductList[productIndex].isFavorited) this.fetchRemoveFavorite(product);
+        let newProductList = this.state.products;
         newProductList[productIndex].isFavorited = !newProductList[productIndex].isFavorited;
+        if (this.props.isFavorite){
+            this.fetchRemoveFavorite(product);
+            newProductList = newProductList.filter(product => product.isFavorited);
+        } 
+        
         this.setState({products: newProductList});
 
     }
@@ -93,8 +97,9 @@ export default class UserSeenProducts extends React.Component {
                 <h2>{this.props.isFavorite ? "لیست محبوب ها" : "آخرین بازدیدها"}</h2>
                 <div className="items">
                     {this.state.products.length > 0 ? this.state.products.map((product) => (
-                        <ResultItem img={product.img} productTitle={product.name}
-                            price={product.price} onFavoriteChanged={() => this.favoriteChangeHandler(product.id)}/>
+                        <ResultItem key={product.id} img={product.img} productTitle={product.name}
+                        price={product.price} onFavoriteChanged={() => this.favoriteChangeHandler(product.id)}
+                        isFavorited={product.isFavorited}/>
                     )) : ''}
                 </div>
             </div>
