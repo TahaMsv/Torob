@@ -14,7 +14,7 @@ export default class MainPage extends React.Component {
     render() {
         return(
                 <div className="main-page">
-                    <Navbar />
+                    <Navbar isMain={true}/>
                     <main>
                         <div className="title">
                             <img src={logo} alt="logo"/>

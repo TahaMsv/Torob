@@ -4,6 +4,12 @@
     border-bottom: 1px var(--gray) solid;
     background-color: white;
 
+    .back-to-main {
+        text-decoration: none;
+        color: var(--dark-green);
+        align-self: center;
+    }
+
     .product-categories-section {
         display: flex;
         align-items: center;
