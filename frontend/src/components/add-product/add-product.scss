@@ -1,0 +1,12 @@
+.btn-close {
+  margin: unset !important;
+}
+
+.items-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  .card {
+    margin: 1rem;
+  }
+}

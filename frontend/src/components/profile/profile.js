@@ -5,7 +5,7 @@ import Navbar from '../navbar/navbar';
 import './profile.scss';
 import { Link } from "react-router-dom";
 import MyReports from "../my-reports/my-reports";
-import MyShops from "../my-shops/my-shops";
+import {MyShops} from "../my-shops/my-shops";
 
 export default class NormalUserProfile extends React.Component {
     state = {
