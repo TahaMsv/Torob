@@ -72,9 +72,10 @@ router.post('/addstore', authorization, async function (req, res, next) {
         if (!store.products.includes(product.id)) {
             store.products.push(product.id);
             product.stores.push({
-                shopId: suggestedPrice
+                shopId,
+                suggestedPrice
             });
-        }else{
+        } else {
             return error(res, "product already exist", 400);
         }
         product.save();
@@ -88,30 +89,38 @@ router.post('/addstore', authorization, async function (req, res, next) {
 });
 
 
-router.get('/:product_id', authorization, async function (req, res, next) {
+router.get('/:product_id', async function (req, res, next) {
     const productId = req.params.product_id;
     const product = await (Product.findOne({ id: productId }));
     if (!product) return error(res, "this product doesn't exists", 400);
 
-    const storesList = await product.stores.map(async storeId => {
-        const store = await (Store.findOne({ id: shopId }));
-        if (store) {
-            return {
-                "id": store.id,
-                "name": store.name,
-                "city": store.city,
-                "sellingPrice": product.stores[store.id],
-            };
-        }
+    const storeIDs = product.stores.map(sotre => sotre["shopId"]);
+    const stores = await (Store.find({
+        id: { $in: storeIDs }
+    }));
+
+    const storeReturnedList = stores.map(store => {
+        return {
+            "id": store.id,
+            "name": store.name,
+            "city": store.city,
+            "sellingPrice": product.stores.filter(function (s) {
+                if (s["shopId"] != store.id) {
+                    return false; // skip
+                }
+                return true;
+            }).map(function (s) { return s["suggestedPrice"]; })[0],
+        };
     });
 
+    console.log("here109");
     return res.status(200).json({
         id: product.id,
         name: product.name,
         img: product.imageUrl,
         productType: product.type,
         details: product.details,
-        stores: storesList
+        stores: storeReturnedList
     });
 
 });
