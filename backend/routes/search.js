@@ -8,7 +8,7 @@ const Product = mongoose.model('Product');
 const NormalUser = mongoose.model('NormalUser');
 
 router.get('/', authorization, async function (req, res, next) {
-    const { value, sortby, type } = req.query;
+    const { value, sortby, type, minprice, maxprice } = req.query;
     const user = await (NormalUser.findOne({ email: req.user.email }));
     let products;
     if (value) {
@@ -18,25 +18,29 @@ router.get('/', authorization, async function (req, res, next) {
     }
 
     let returndList;
+
     if (products) {
         returndList = products.map(product => {
             let leastPrice = 1.797693134862315E+308;
-            product.stores.map(store =>{
-                if(store["suggestedPrice"] < leastPrice) leastPrice = store["suggestedPrice"];
+            let maxPrice = 0;
+            product.stores.map(store => {
+                if (store["suggestedPrice"] < leastPrice) leastPrice = store["suggestedPrice"];
+                if (store["suggestedPrice"] > maxPrice) maxPrice = store["suggestedPrice"];
             });
-            
+
             let isFavorited = false;
             user.favoriteProducts.map(p => {
                 if (p === product.id) {
                     isFavorited = true;
                 }
             });
-     
+
             return {
                 id: product.id,
                 name: product.name,
                 img: product.imageUrl,
                 leastPrice,
+                maxPrice,
                 dateAdded: product.dateAdded,
                 isFavorited
             }
@@ -44,6 +48,26 @@ router.get('/', authorization, async function (req, res, next) {
     }
 
     if (returndList) {
+        if (maxprice) {
+            returndList = returndList.filter(function (p) {
+                if (p.maxPrice > maxprice) {
+                    return false; // skip
+                }
+                return true;
+            });
+        }
+
+        if (minprice) {
+            returndList = returndList.filter(function (p) {
+                if (p.leastPrice < minprice) {
+                    return false; // skip
+                }
+                return true;
+            });
+        }
+
+
+
         if (sortby === "newest") {
             returndList = returndList.sort((p1, p2) => p2.id - p1.id);
         } else if (sortby === "cheap") {
