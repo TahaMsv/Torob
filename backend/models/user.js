@@ -18,6 +18,13 @@ userSchema.discriminator('NormalUser',
         latestProducts: { type: [Number], default: [] },
     }, options));
 
+
+userSchema.discriminator('StoreOwner',
+    new mongoose.Schema({
+        phone: { type: String },
+        stores: { type: [Number], default: [] },
+    }, options));
+
 userSchema.discriminator('AdminUser',
     new mongoose.Schema({}, options));
 
@@ -32,9 +39,6 @@ userSchema.methods.getJWT = function () {
     }, "secret");
 };
 
-userSchema.methods.validatePassword = function (password) {
-    if (this.password !== password) return error(res, "wrong password", 400);
-};
 
 
 module.exports = mongoose.model('User', userSchema);
