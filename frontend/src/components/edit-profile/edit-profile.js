@@ -6,13 +6,26 @@ export default class EditProfile extends React.Component {
         currUser: {}
     }
 
+    fetchCurrUser() {
+        fetch(`http://127.0.0.1:3002/user/getuserdetails`, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => {
+            return res.json();
+        })
+        .then((json) => {
+            const currUser = json;
+            this.setState({currUser});
+        })
+        .catch((__) => {});
+    }
+
     componentDidMount() {
-        this.setState({currUser: {
-            name: 'صبا براهیمی',
-            email: 'saba.eb18@gmail.com',
-            phone: 9222421,
-        }}
-        );
+        this.fetchCurrUser();
     }
     render() {
         return (
@@ -20,7 +33,7 @@ export default class EditProfile extends React.Component {
                 <div>
                     <section className="normal-section">
                         <label htmlFor="username">تغییر نام و نام خانوادگی</label>
-                        <input value={this.state.currUser.name} id="username" type="text" placeholder={this.state.currUser.name}/>
+                        <input value={this.state.currUser.username} id="username" type="text" placeholder={this.state.currUser.username}/>
                     </section>
                     <section className="normal-section">
                         <label htmlFor="userphone">تغییر شماره تلفن</label>

@@ -13,7 +13,6 @@ router.post('/create', authorization, async function (req, res, next) {
   const store = await(Store.findOne({ id: shopId }));
   if (!store) return error(res, "requested shop not found", 400);
   const reportId = await Report.count() + 1;
-  console.log(req.user);
   const report = new Report({
     id: reportId,
     userID: req.user.userId,
