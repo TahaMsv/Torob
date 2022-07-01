@@ -6,9 +6,9 @@ const Store = mongoose.model('Store');
 const StoreOwner = mongoose.model('StoreOwner');
 const User = mongoose.model('User');
 const authorization = require('../middlewares/user-auth');
+const error = require("../utilities/errorFunction");
 
-
-router.post('/create', authorization, async function (req, res, next) {
+router.post('/create', async function (req, res, next) {
   const { userId, shopId, content, type } = req.body;
   const store = await(Store.findOne({ id: shopId }));
   if (!store) return error(res, "requested shop not found", 400);
@@ -37,7 +37,7 @@ router.get('/:shop_id', authorization, async function (req, res, next) {
   if (!store) return error(res, "requested shop not found", 400);
 
   const storeOwner = await(StoreOwner.findOne({ email: req.user.email }));
-  if (!storeOwner) return error(res, "Store owner not found", 401);
+  if (!storeOwner) return error(res, "permission denied", 401);
 
   var OwnerOfThisShop = false;
   storeOwner.stores.map(storeId => {
@@ -47,18 +47,21 @@ router.get('/:shop_id', authorization, async function (req, res, next) {
   });
   if (!OwnerOfThisShop) return error(res, "permission denied", 401);
 
-  const reports = await(Report.findOne({ shopID: shopId }).sort({ id: 'descending' }));
+  const reports = await(Report.find({ shopID: shopId }).sort({ id: 'descending' }));
 
-  const reportsList = reports.map(async report => {
+  const promises = reports.map(async report => {
     const user = await (User.findOne({ id: report.userID }));
+    console.log
     if (user) {
       return {
-        "userName": user.userName,
+        "userName": user.name,
         "reportType": report.type,
         "content": report.content
       };
     }
   });
+
+  const reportsList = await Promise.all(promises)
   return res.status(200).json(reportsList);
 
 });
