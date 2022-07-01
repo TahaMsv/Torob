@@ -24,6 +24,14 @@
             display: flex;
             flex-direction: column;
 
+            .invalid {
+                text-align: right;
+                background-color: var(--alert-red);
+                color: red;
+                margin: 0 15px;
+                padding: 2px 5px;
+            }
+
             .submit-btn {
                 width: 60%;
                 align-self: center;

@@ -2,8 +2,10 @@ var express = require('express');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var createError = require('http-errors');
+const cors = require('cors');
 
 var app = express();
+app.use(cors());
 
 const dbPath = `mongodb://localhost:27017/torob`;
 mongoose.connect(dbPath,  {useNewUrlParser: true, useUnifiedTopology: true});
