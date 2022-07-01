@@ -3,9 +3,11 @@ import './my-shops.scss';
 import addImg from '../../assets/logo/add-img.svg';
 import {Form, Button, Container, Row, Co, Col, Card, FormControl, CardImg} from 'react-bootstrap'
 import {AddProduct} from "../add-product/add-product";
+import {NewProduct} from "../create-product/create-product";
 
 export function MyShops() {
-    const [showModal, setShowModal] = useState(false);
+    const [showAddProductModal, setShowAddProductModal] = useState(false);
+    const [showCreateProductModal, setShowCreateProductModal] = useState(false);
     const [addedItems, addItems] = useState([]);
 
         return (
@@ -51,7 +53,10 @@ export function MyShops() {
                 <Card.Header>
                   <div className="add-item-header">
                       <span>افزودن کالا</span>
-                      <Button onClick={() => setShowModal(true)}></Button>
+                      <div className="btn-container">
+                          <Button onClick={() => setShowAddProductModal(true)}>+</Button>
+                          <Button variant={"outline-primary"} onClick={() => setShowCreateProductModal(true)}>ساخت کالا</Button>
+                      </div>
                   </div>
                 </Card.Header>
                 <Card.Body>
@@ -68,7 +73,8 @@ export function MyShops() {
               </Card>
               </Col>
             </Row>
-              <AddProduct show = {showModal} setShow={setShowModal} addItems={addItems}></AddProduct>
+              <AddProduct show = {showAddProductModal} setShow={setShowAddProductModal} addItems={addItems}></AddProduct>
+              <NewProduct show = {showCreateProductModal} setShow={setShowCreateProductModal} ></NewProduct>
           </Container>
           
         )

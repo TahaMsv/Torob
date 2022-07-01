@@ -39,4 +39,8 @@ button[type="submit"] {
 .add-item-header {
     display: flex;
     justify-content: space-between;
+    .btn-container {
+        display: flex;
+        gap: 0.5rem;
+    }
 }
