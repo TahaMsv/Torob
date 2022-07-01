@@ -47,7 +47,7 @@ router.get('/:shop_id', authorization, async function (req, res, next) {
   });
   if (!OwnerOfThisShop) return error(res, "permission denied", 401);
 
-  const reports = await(Reports.findOne({ shopID: shopId }).sort({ id: 'descending' }));
+  const reports = await(Report.findOne({ shopID: shopId }).sort({ id: 'descending' }));
 
   const reportsList = reports.map(async report => {
     const user = await (User.findOne({ id: report.userID }));
