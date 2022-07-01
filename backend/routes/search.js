@@ -30,7 +30,8 @@ router.get('/', authorization, async function (req, res, next) {
                 if (p === product.id) {
                     isFavorited = true;
                 }
-            });     
+            });
+     
             return {
                 id: product.id,
                 name: product.name,
@@ -41,9 +42,10 @@ router.get('/', authorization, async function (req, res, next) {
             }
         });
     }
+
     if (returndList) {
         if (sortby === "newest") {
-            returndList = returndList.sort((p1, p2) => p1.id - p2.id);
+            returndList = returndList.sort((p1, p2) => p2.id - p1.id);
         } else if (sortby === "cheap") {
             returndList = returndList.sort((p1, p2) => p1.leastPrice - p2.leastPrice);
         } else if (sortby === "expensive") {
