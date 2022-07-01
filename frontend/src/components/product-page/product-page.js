@@ -1,5 +1,6 @@
 import React from "react";
 import heartLogo from "../../assets/logo/Ei-heart.svg";
+import heartLogoRed from "../../assets/logo/Ei-heart-red.svg";
 import Navbar from "../navbar/navbar";
 import ShopList from "../shop-list/shop-list";
 import './product-page.scss';
@@ -25,8 +26,13 @@ export default class ProductPage extends React.Component {
         .then((json) => {
             console.log(json);
             this.setState({ product: json });
+            this.setMinMaxPrices(json);
         })
         .catch((__) => {});
+    }
+
+    fetchAddToFavorite(productId) {
+        
     }
 
     setMinMaxPrices(product) {
@@ -97,7 +103,12 @@ export default class ProductPage extends React.Component {
         };
 
         // this.setState({product: mockProduct});
-        this.setMinMaxPrices(mockProduct);
+    }
+
+    addToFavorites() {
+        let productSample = this.state.product;
+        productSample.isFavorited = !productSample.isFavorited;
+        this.setState({product: productSample});
     }
 
 
@@ -118,7 +129,8 @@ export default class ProductPage extends React.Component {
                             <p>از {this.state.minPrice} هزار تومان تا  {this.state.maxPrice} هزار تومان</p>
                         </div>
                     </div>
-                    <img className="heart-logo" src={heartLogo}/>
+                    <img className="heart-logo" onClick={() => this.addToFavorites()} 
+                        src={this.state.product.isFavorited ? heartLogoRed : heartLogo}/>
                 </section>
                 <div className="store-details">
                     <section className="shop-list-wrapper">
