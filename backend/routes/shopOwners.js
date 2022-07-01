@@ -1,11 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const mongoose = require('mongoose');
+const express = require('express');
+const router = express.Router();
 const Store = mongoose.model('Store');
 const StoreOwner = mongoose.model('StoreOwner');
 const authorization = require('../middlewares/user-auth');
 
 
-router.post('/addstore', authorization, function async(req, res, next) {
+router.post('/addstore', authorization, async function (req, res, next) {
     const { name, city, ownerId } = req.body;
     const owner = await(StoreOwner.findOne({ id: ownerId }));
     const storId = await Store.count() + 1;
@@ -27,7 +28,7 @@ router.post('/addstore', authorization, function async(req, res, next) {
 });
 
 
-router.get('/stores', authorization, function async(req, res, next) {
+router.get('/stores', authorization, async function (req, res, next) {
     const stores = await(Store.findOne({}).sort({ id: 'descending' }));
     const responseList = stores.map(async store => {
         return {
@@ -38,3 +39,6 @@ router.get('/stores', authorization, function async(req, res, next) {
     });
     return res.status(200).json(responseList);
 });
+
+
+module.exports = router;

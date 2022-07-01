@@ -2,13 +2,24 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const error = require("../utilities/errorFunction")
 
+const options = { discriminatorKey: 'kind' };
+
 const userSchema = mongoose.Schema({
     id: { type: Number, unique: true },
     name: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String },
-});
+}, options);
 
+userSchema.discriminator('NormalUser',
+    new mongoose.Schema({
+        phone: { type: String },
+        favoriteProducts: { type: [Number], default: [] },
+        latestProducts: { type: [Number], default: [] },
+    }, options));
+
+userSchema.discriminator('AdminUser',
+    new mongoose.Schema({}, options));
 
 userSchema.methods.getJWT = function () {
     const today = new Date();

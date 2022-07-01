@@ -1,5 +1,6 @@
 var router = require('express').Router();
 const mongoose = require("mongoose");
+const User = mongoose.model('User');
 const NormalUser = mongoose.model('NormalUser');
 const AdminUser = mongoose.model('AdminUser');
 const StoreOwner = mongoose.model('StoreOwner');
@@ -13,29 +14,33 @@ router.post('/signup', async (req, res, next) => {
         return error(res, "Name, email or password is empty", 400);
     }
     let newUser;
-
     if (userType === "normal") {
         const otherSameUser = await (NormalUser.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
-        const newUserId = await NormalUser.count();
+        const newUserId = await User.count() + 1;
         newUser = new NormalUser({
-            id: newUserId + 1,
+            id: newUserId,
             name,
             email,
             password,
             phone,
         });
-    } else {
+
+    } else if (userType === "admin") {
         const otherSameUser = await (AdminUser.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
-        const newUserId = await AdminUser.count();
+        const newUserId = await User.count() + 1;
+        console.log(newUserId);
         newUser = new AdminUser({
-            id: newUserId + 1,
+            id: newUserId,
             name,
             email,
             password,
         });
+    } else {
+        return error(res, "userType does not exist", 401);
     }
+
     await newUser.save();
     const token = newUser.getJWT();
     return res.status(200).json({

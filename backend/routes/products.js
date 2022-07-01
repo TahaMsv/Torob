@@ -1,25 +1,33 @@
-var express = require('express');
-var router = express.Router();
+const mongoose = require('mongoose');
+const express = require('express');
+const router = express.Router();
 const Store = mongoose.model('Store');
 const StoreOwner = mongoose.model('StoreOwner');
 const Product = mongoose.model('Product');
+const Type = mongoose.model('Type');
 const authorization = require('../middlewares/user-auth');
 
 
-router.post('/create', authorization, function async(req, res, next) {
-    const { name, suggestedPrice, details, img, link, productType } = req.body;
+router.post('/create', authorization,async function (req, res, next) {
+    const { name, shopId, suggestedPrice, details, img, link, productType } = req.body;
     const owner = await(StoreOwner.findOne({ email: req.user.email }));
     if (owner) {
         const productId = await Product.count() + 1;
         const product = new Product({
             id: productId,
             name,
-            type: productType,  // این قسمت باید درست شه.
+            type: productType,
             imageUrl: img,
             details
         });
-        // باید معلوم شه محصول برای کدوم استوره.
+        product.stores.push({
+            shopId: suggestedPrice
+        })
+        const store = await(Store.findOne({ id: shopId }));
+        store.products.push(productId);
+
         product.save();
+        store.save();
         return res.status(200).json({
             id: product.productId,
             message: "successful"
@@ -28,14 +36,19 @@ router.post('/create', authorization, function async(req, res, next) {
     return error(res, "permission denied", 400);
 });
 
-router.post('/addstore', authorization, function async(req, res, next) {
-    const { productId, shopId } = req.body;
+router.post('/addstore', authorization,async function (req, res, next) {
+    const { productId, shopId, suggestedPrice } = req.body;
     const owner = await(StoreOwner.findOne({ email: req.user.email }));
     if (owner) {
         const store = await(Store.findOne({ id: shopId }));
         const product = await(Product.findOne({ id: productId }));
 
-        // اضافه کردن استور به لیست استور ها در محصول
+        product.stores.push({
+            shopId: suggestedPrice
+        })
+        store.products.push(productId);
+        product.save();
+        store.save();
         return res.status(200).json({
             message: "successful"
         });
@@ -45,7 +58,7 @@ router.post('/addstore', authorization, function async(req, res, next) {
 });
 
 
-router.get('/:product_id', authorization, function async(req, res, next) {
+router.get('/:product_id', authorization,async function (req, res, next) {
     const productId = req.params.product_id;
     const product = await(Product.findOne({ id: productId }));
     if (!product) return error(res, "this product doesn't exists", 400);
@@ -57,8 +70,7 @@ router.get('/:product_id', authorization, function async(req, res, next) {
                 "id": store.id,
                 "name": store.name,
                 "city": store.city,
-                "sellingPrice": "55000000",  // دقیق نمیدونم از کجا میاد
-                "link": "facebook.com" // دقیق نمیدونم از کجا میاد
+                "sellingPrice": product.stores[store.id],  
             };
         }
     });
@@ -69,7 +81,9 @@ router.get('/:product_id', authorization, function async(req, res, next) {
         img: product.imageUrl,
         productType: "laptop|lenovo",  // باید محاسبه بشه
         details: product.details,
-        stores:storesList
+        stores: storesList
     });
 
 });
+
+module.exports = router;

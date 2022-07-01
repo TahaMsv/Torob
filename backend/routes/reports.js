@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
 const Report = mongoose.model('Report');
@@ -7,7 +8,7 @@ const User = mongoose.model('User');
 const authorization = require('../middlewares/user-auth');
 
 
-router.post('/create', authorization, function async(req, res, next) {
+router.post('/create', authorization, async function (req, res, next) {
   const { userId, shopId, content, type } = req.body;
   const store = await(Store.findOne({ id: shopId }));
   if (!store) return error(res, "requested shop not found", 400);
@@ -20,6 +21,8 @@ router.post('/create', authorization, function async(req, res, next) {
     type: type,
   });
 
+  store.reports.push(reportId);
+  store.save();
   report.save();
   return res.status(200).json({
     id: report.reportId,
@@ -28,7 +31,7 @@ router.post('/create', authorization, function async(req, res, next) {
 });
 
 
-router.get('/:shop_id', authorization, function async(req, res, next) {
+router.get('/:shop_id', authorization, async function (req, res, next) {
   const shopId = req.params.shop_id;
   const store = await(Store.findOne({ id: shopId }));
   if (!store) return error(res, "requested shop not found", 400);
@@ -59,3 +62,6 @@ router.get('/:shop_id', authorization, function async(req, res, next) {
   return res.status(200).json(reportsList);
 
 });
+
+
+module.exports = router;

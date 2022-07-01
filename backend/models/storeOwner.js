@@ -1,6 +1,6 @@
 const extendSchema = require('mongoose-extend-schema');
-
-const User = mongoose.models('User');
+const mongoose = require('mongoose');
+const User = require('../models/user');
 
 const storeOwnerSchema = extendSchema(User, {
     phone: { type: String },

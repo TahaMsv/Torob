@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
 const User = mongoose.model('User');
@@ -5,7 +6,7 @@ const error = require("../utilities/errorFunction");
 const authorization = require('../middlewares/user-auth');
 
 
-router.put('/update', authorization, function async(req, res, next) {
+router.put('/update', authorization,async  function(req, res, next) {
     const { email, name, phone, password } = req.body;
     if (!name || !email || !password || !phone) {
         return error(res, "Name, email, phone or password is empty", 400);

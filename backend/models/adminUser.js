@@ -1,7 +1,7 @@
-const extendSchema = require('mongoose-extend-schema');
+// const extendSchema = require('mongoose-extend-schema');
+// const mongoose = require('mongoose');
+// const User =  require('../models/user');
 
-const User = mongoose.models('User');
+// const adminUserSchema = extendSchema(User, {});
 
-const adminUserSchema = extendSchema(User, {});
-
-module.exports = mongoose.model('AdminUser', adminUserSchema);
+// module.exports = mongoose.model('AdminUser', adminUserSchema);
