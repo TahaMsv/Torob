@@ -18,8 +18,9 @@ export default class NormalUserProfile extends React.Component {
             case 1:
                  return (<EditProfile/>)
             case 2:
+                return (<UserSeenProducts isFavorite ={true}/>)
             case 3:
-                return (<UserSeenProducts isFavorite ={this.state.tab === 2}/>)
+                return (<UserSeenProducts isFavorite ={false}/>)
             case 4:
                 return (<MyReports/>)
             case 5:

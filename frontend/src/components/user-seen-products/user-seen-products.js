@@ -7,9 +7,19 @@ export default class UserSeenProducts extends React.Component {
         products: []
     };
 
+    constructor(props) {
+        super(props);
+    }
+
     fetchData() {
-        const url = this.props.isFavortie ? 'localhost/normaluser/favorites' : 'localhost/normaluser/latest';
-        fetch(url)
+        const url = this.props.isFavorite ? 'http://127.0.0.1:3002/normaluser/favorites' : 
+        'http://127.0.0.1:3002/normaluser/latest';
+        fetch(url, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+        }})
         .then((res) => {
             if (res.ok) return res.json();
             else throw new Error("Server error");
@@ -20,27 +30,53 @@ export default class UserSeenProducts extends React.Component {
         .catch((__) => {});
     }
 
-    fetchRemoveFavorite(productId) {
-        fetch("https://jsonplaceholder.typicode.com/posts", {
-        method: "PUT",
-        
-        body: JSON.stringify({
-            productId
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
+    fetchDeleteFromFavorite(productId) {
+        fetch(`http://127.0.0.1:3002/normaluser/removefavorite`, {
+            method: "DELETE",
+            body: JSON.stringify({
+                productId
+            }),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+            }
         })
-        .then(response => response.json())
-        .then(json => console.log(json));
+        .then((res) => {
+            return res.json();
+        })
+        .then((json) => {
+        })
+        .catch((__) => {});
+    }
+
+    fetchAddToFavorite(productId) {
+        fetch(`http://127.0.0.1:3002/normaluser/addfavorite`, {
+            method: "PUT",
+            body: JSON.stringify({
+                productId
+            }),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => {
+            return res.json();
+        })
+        .then((json) => {
+        })
+        .catch((__) => {});
     }
 
     favoriteChangeHandler(product) {
         const productIndex = this.state.products.findIndex((item) => item.id === product);
         let newProductList = this.state.products;
         newProductList[productIndex].isFavorited = !newProductList[productIndex].isFavorited;
+        if (!newProductList[productIndex].isFavorited)
+            this.fetchDeleteFromFavorite(newProductList[productIndex].id);
+        else 
+            this.fetchAddToFavorite(newProductList[productIndex].id);
         if (this.props.isFavorite){
-            this.fetchRemoveFavorite(product);
             newProductList = newProductList.filter(product => product.isFavorited);
         } 
         
@@ -49,7 +85,7 @@ export default class UserSeenProducts extends React.Component {
     }
 
     componentDidMount() {
-        // this.fetchData();
+        this.fetchData();
         const mockData = [
             {
                 id: 3,
@@ -88,7 +124,7 @@ export default class UserSeenProducts extends React.Component {
                 isFavorited: true
             }
         ];
-        this.setState({products: mockData});
+        // this.setState({products: mockData});
     }
 
     render() {

@@ -32,7 +32,41 @@ export default class ProductPage extends React.Component {
     }
 
     fetchAddToFavorite(productId) {
+        fetch(`http://127.0.0.1:3002/normaluser/addfavorite`, {
+            method: "PUT",
+            body: JSON.stringify({
+                productId
+            }),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => {
+            return res.json();
+        })
+        .then((json) => {
+        })
+        .catch((__) => {});
+    }
 
+    fetchDeleteFromFavorite(productId) {
+        fetch(`http://127.0.0.1:3002/normaluser/removefavorite`, {
+            method: "DELETE",
+            body: JSON.stringify({
+                productId
+            }),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => {
+            return res.json();
+        })
+        .then((json) => {
+        })
+        .catch((__) => {});
     }
 
     setMinMaxPrices(product) {
@@ -109,6 +143,11 @@ export default class ProductPage extends React.Component {
         let productSample = this.state.product;
         productSample.isFavorited = !productSample.isFavorited;
         this.setState({product: productSample});
+        if (productSample.isFavorited) {
+            this.fetchAddToFavorite(productSample.id);
+        } else {
+            this.fetchDeleteFromFavorite(productSample.id);
+        }
     }
 
 
