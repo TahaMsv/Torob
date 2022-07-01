@@ -30,7 +30,7 @@ export default class Login extends React.Component {
                 localStorage.setItem('token', json.token);
                 localStorage.setItem('isUserLoggedIn', true);
                 this.setState({isWrongPassword: false, emailNotExists: false});
-                window.location.href = 'http://127.0.0.1:3001/';
+                window.location.href = 'http://127.0.0.1:3000/';
             } else {
                 if (json.error.message.startsWith('wrong')) {
                     this.setState({isWrongPassword: true, emailNotExists: false});

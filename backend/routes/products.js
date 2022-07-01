@@ -62,6 +62,7 @@ router.post('/create', authorization, async function (req, res, next) {
 });
 
 router.post('/addstore', authorization, async function (req, res, next) {
+    console.log("salam")
     const { productId, shopId, suggestedPrice } = req.body;
     const owner = await (StoreOwner.findOne({ email: req.user.email }));
     if (owner) {

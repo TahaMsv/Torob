@@ -10,13 +10,34 @@ export function MyShops() {
     const [showCreateProductModal, setShowCreateProductModal] = useState(false);
     const [addedItems, addItems] = useState([]);
 
+    const store =
+        {
+            "name": "HomaKala",
+            "city": "tehran",
+            "ownerId": 6
+        };
+
+
+    const onAddStore = async(event) => {
+        event.preventDefault();
+        const res = await fetch('http://127.0.0.1:3002/product/addstore', {
+            method: "POST",
+            mode: 'cors',
+            body: JSON.stringify(store),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        console.log(res)
+    }
+
         return (
           <Container className="main-container">
             <Row>
               <Col md={8}>
               <Card className="form-card">
                 <Card.Header className="card-header">مشخصات فروشگاه </Card.Header>
-            <Form>
+            <Form onSubmit={(event) => onAddStore(event)}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="">نام فروشگاه</Form.Label>
           <Form.Control className="" placeholder="نام فروشگاه را وارد کنید" />
