@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Store = mongoose.model('Store');
 const StoreOwner = mongoose.model('StoreOwner');
+const NormalUser = mongoose.model('NormalUser');
 const Product = mongoose.model('Product');
 const Type = mongoose.model('Type');
 const authorization = require('../middlewares/user-auth');
@@ -89,11 +90,18 @@ router.post('/addstore', authorization, async function (req, res, next) {
 });
 
 
-router.get('/:product_id', async function (req, res, next) {
+router.get('/:product_id', authorization, async function (req, res, next) {
     const productId = req.params.product_id;
     const product = await (Product.findOne({ id: productId }));
     if (!product) return error(res, "this product doesn't exists", 400);
 
+    const user = await (NormalUser.findOne({ email: req.user.email }));
+    let isFavorited = false;
+    user.favoriteProducts.map(pId => {
+        if (pId == product.id) {
+            isFavorited = true;
+        }
+    })
     const storeIDs = product.stores.map(sotre => sotre["shopId"]);
     const stores = await (Store.find({
         id: { $in: storeIDs }
@@ -112,14 +120,13 @@ router.get('/:product_id', async function (req, res, next) {
             }).map(function (s) { return s["suggestedPrice"]; })[0],
         };
     });
-
-    console.log("here109");
     return res.status(200).json({
         id: product.id,
         name: product.name,
         img: product.imageUrl,
         productType: product.type,
         details: product.details,
+        isFavorited,
         stores: storeReturnedList
     });
 
