@@ -20,7 +20,7 @@ function App() {
           <Route path='/search' component={ResultItems} />
           <Route path={'/product/:id'} component={ProductPage} />
           <Route path={'/profile'} component={Profile}/>
-          <Route path={'/shops'} comopnent={MyShops} />
+          <Route path={'/shops'} component={MyShops} />
         </Switch>
       </BrowserRouter>
     </div>

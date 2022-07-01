@@ -1,0 +1,37 @@
+.form-label {
+    float: right;
+}
+
+.form-card {
+    form {
+        padding: 0.7rem;
+    }
+}
+
+.card-header{
+    text-align: right;
+}
+
+button[type="submit"] {
+    float: left;
+}
+
+.add-img {
+ width: 5rem;   
+ height: 5rem;
+}
+
+.card-subtitle {
+    position: absolute;
+    bottom: 30%;
+    right: 0;
+    left: 0;
+}
+
+.main-container {
+    padding: 1rem;
+}
+
+.add-items {
+    margin-top: 3rem !important;
+}
