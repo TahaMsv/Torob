@@ -1,12 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import './my-shops.scss';
 import addImg from '../../assets/logo/add-img.svg';
-
-
 import {Form, Button, Container, Row, Co, Col, Card, FormControl, CardImg} from 'react-bootstrap'
-export default class MyShops extends React.Component {
-    render() {
-        return (  
+import {AddProduct} from "../add-product/add-product";
+
+export function MyShops() {
+    const [showModal, setShowModal] = useState(false);
+    const [addedItems, addItems] = useState([]);
+
+        return (
           <Container className="main-container">
             <Row>
               <Col md={8}>
@@ -47,16 +49,27 @@ export default class MyShops extends React.Component {
               <Col>
               <Card>
                 <Card.Header>
-                  افزودن کالا
+                  <div className="add-item-header">
+                      <span>افزودن کالا</span>
+                      <Button onClick={() => setShowModal(true)}></Button>
+                  </div>
                 </Card.Header>
                 <Card.Body>
-                  کالایی انتخاب نشده است
+                    {
+                        addedItems.map(item => (
+                            <div>
+                                <img src={item.img} style={{width: "5rem"}}/>
+                                <h5>{item.name}</h5>
+                                <span>{item.price}</span>
+                            </div>
+                        ))
+                    }
                 </Card.Body>
               </Card>
               </Col>
             </Row>
+              <AddProduct show = {showModal} setShow={setShowModal} addItems={addItems}></AddProduct>
           </Container>
           
         )
-    }
 }

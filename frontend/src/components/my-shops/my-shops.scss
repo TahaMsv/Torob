@@ -35,3 +35,8 @@ button[type="submit"] {
 .add-items {
     margin-top: 3rem !important;
 }
+
+.add-item-header {
+    display: flex;
+    justify-content: space-between;
+}
