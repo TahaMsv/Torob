@@ -49,7 +49,9 @@ export default class EditProfile extends React.Component {
             return res.json();
         })
         .then((json) => {
-            console.log(json);
+            if (json.message.startsWith('successful') && this.state.oldPassword === '') {
+                this.setState({password: this.state.newPassword});
+            }
         })
         .catch((__) => {});
     }
