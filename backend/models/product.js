@@ -5,17 +5,17 @@ const productSchema = mongoose.Schema({
   name: { type: String },
   type: { type: String },
   imageUrl: { type: String },
-  dateAdded: { type: Date,  default: Date.now() },
+  dateAdded: { type: Date, default: Date.now() },
   link: { type: String },
   details: {
     type: Map,
     of: String
   },
   stores: {                          //{ "shopId":  }
-    type: {
-      type: Map,
-      of: String
-    }, default: {}
+    type: [{
+      shopId: String,
+      suggestedPrice: Number
+    }], default: []
   },
 });
 

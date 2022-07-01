@@ -6,32 +6,57 @@ const StoreOwner = mongoose.model('StoreOwner');
 const Product = mongoose.model('Product');
 const Type = mongoose.model('Type');
 const authorization = require('../middlewares/user-auth');
-
+const error = require("../utilities/errorFunction");
 
 router.post('/create', authorization, async function (req, res, next) {
     const { name, shopId, suggestedPrice, details, img, link, productType } = req.body;
     const owner = await (StoreOwner.findOne({ email: req.user.email }));
     if (owner) {
-        const productId = await Product.count() + 1;
-        const product = new Product({
-            id: productId,
-            name,
-            type: productType,
-            imageUrl: img,
-            details,
-            link
-        });
-        product.stores[shopId] = suggestedPrice;
+        if (owner.stores.includes(shopId)) {
+            const store = await (Store.findOne({ id: shopId }));
+            const sameProduct = await (Product.findOne({ name }));
+            if (sameProduct) {
+                sameProduct.stores.push(
+                    {
+                        shopId,
+                        suggestedPrice
+                    }
+                );
+                store.products.push(sameProduct.id);
 
-        const store = await (Store.findOne({ id: shopId }));
-        store.products.push(productId);
+                sameProduct.save();
+                store.save();
+                return res.status(200).json({
+                    id: sameProduct.id,
+                    message: "successful"
+                });
+            }
+            else {
+                const productId = await Product.count() + 1;
+                const product = new Product({
+                    id: productId,
+                    name,
+                    type: productType,
+                    imageUrl: img,
+                    details,
+                    link
+                });
+                product.stores.push(
+                    {
+                        shopId,
+                        suggestedPrice
+                    }
+                );
+                store.products.push(productId);
 
-        product.save();
-        store.save();
-        return res.status(200).json({
-            id: product.productId,
-            message: "successful"
-        });
+                product.save();
+                store.save();
+                return res.status(200).json({
+                    id: product.productId,
+                    message: "successful"
+                });
+            }
+        }
     }
     return error(res, "permission denied", 400);
 });

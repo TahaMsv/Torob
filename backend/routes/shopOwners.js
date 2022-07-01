@@ -4,11 +4,11 @@ const router = express.Router();
 const Store = mongoose.model('Store');
 const StoreOwner = mongoose.model('StoreOwner');
 const authorization = require('../middlewares/user-auth');
-
+const error = require("../utilities/errorFunction");
 
 router.post('/addstore', authorization, async function (req, res, next) {
     const { name, city, ownerId } = req.body;
-    const owner = await(StoreOwner.findOne({ id: ownerId }));
+    const owner = await (StoreOwner.findOne({ id: ownerId }));
     const storId = await Store.count() + 1;
 
     if (owner) {
@@ -17,8 +17,10 @@ router.post('/addstore', authorization, async function (req, res, next) {
             name,
             city
         });
+        
+        if (!owner.stores.includes(store.id)) owner.stores.push(store.id);
+        owner.save();
         store.save();
-        owner.stores.push(store.id);
         return res.status(200).json({
             id: store.id,
             message: "successful"
@@ -29,7 +31,7 @@ router.post('/addstore', authorization, async function (req, res, next) {
 
 
 router.get('/stores', authorization, async function (req, res, next) {
-    const stores = await(Store.findOne({}).sort({ id: 'descending' }));
+    const stores = await (Store.findOne({}).sort({ id: 'descending' }));
     const responseList = stores.map(async store => {
         return {
             "id": store.id,
