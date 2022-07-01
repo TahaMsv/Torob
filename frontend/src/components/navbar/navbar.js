@@ -8,7 +8,7 @@ import "./navbar.scss";
 export default class Navbar extends React.Component {
     state={
         showCategories: false,
-        isUserLoggedIn: true,
+        isUserLoggedIn: false,
     }
 
     onCategoryHover() {
@@ -22,22 +22,31 @@ export default class Navbar extends React.Component {
                         <FontAwesomeIcon icon={faBars} />
                         <p>دسته بندی کالاها</p>
                     </div>
-                    
+                    {
+                        !this.props.isMain ? <Link to='/' className="back-to-main">
+                                بازگشت به صفحه اصلی
+                            </Link> : ''
+                    }
                     <div className="buttons">
                         {
                             !this.state.isUserLoggedIn ? (
                                 <div>   
                                     <Link to="/login">
-                                <button className="login-btn">ورود</button>
-                                </Link>
-                                <Link to="/signup">
-                                    <button className="signup-btn">ثبت نام</button>
-                                </Link>
+                                        <button className="login-btn">ورود</button>
+                                    </Link>
+                                    <Link to="/signup">
+                                        <button className="signup-btn">ثبت نام</button>
+                                    </Link>
                                 </div>
                             ) : (
-                                <Link to="/profile">
-                                    <button className="signup-btn">پروفایل</button>
-                                </Link>
+                                <div>
+                                    <Link to="/profile">
+                                        <button className="signup-btn">پروفایل</button>
+                                    </Link>
+                                    <Link>
+                                        <button className="login-btn">خروج</button>
+                                    </Link>
+                                </div>
                             )
                         }
                     </div>
