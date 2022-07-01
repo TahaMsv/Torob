@@ -20,6 +20,30 @@ export default class UserSeenProducts extends React.Component {
         .catch((__) => {});
     }
 
+    fetchRemoveFavorite(productId) {
+        fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "PUT",
+        
+        body: JSON.stringify({
+            productId
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+        })
+        .then(response => response.json())
+        .then(json => console.log(json));
+    }
+
+    favoriteChangeHandler(product) {
+        const productIndex = this.state.products.findIndex((item) => item.id === product);
+        const newProductList = this.state.products;
+        if (newProductList[productIndex].isFavorited) this.fetchRemoveFavorite(product);
+        newProductList[productIndex].isFavorited = !newProductList[productIndex].isFavorited;
+        this.setState({products: newProductList});
+
+    }
+
     componentDidMount() {
         // this.fetchData();
         const mockData = [
@@ -28,31 +52,36 @@ export default class UserSeenProducts extends React.Component {
                 name: "لنوو آیدیا پد",
                 img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
                 leastPrice: 200000,
-                dateAdded: "1401/2/31"
+                dateAdded: "1401/2/31",
+                isFavorited: true
             }, {
                 id: 4,
                 name: "لنوو آیدیا پد",
                 img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
                 leastPrice: 200000,
-                dateAdded: "1401/2/31"
+                dateAdded: "1401/2/31",
+                isFavorited: true
             } , {
                 id: 5,
                 name: "لنوو آیدیا پد",
                 img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
                 leastPrice: 200000,
-                dateAdded: "1401/2/31"
+                dateAdded: "1401/2/31",
+                isFavorited: true
             }, {
                 id: 6,
                 name: "لنوو آیدیا پد",
                 img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
                 leastPrice: 200000,
-                dateAdded: "1401/2/31"
+                dateAdded: "1401/2/31",
+                isFavorited: true
             } , {
                 id: 7,
                 name: "لنوو آیدیا پد",
                 img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
                 leastPrice: 200000,
-                dateAdded: "1401/2/31"
+                dateAdded: "1401/2/31",
+                isFavorited: true
             }
         ];
         this.setState({products: mockData});
@@ -65,7 +94,7 @@ export default class UserSeenProducts extends React.Component {
                 <div className="items">
                     {this.state.products.length > 0 ? this.state.products.map((product) => (
                         <ResultItem img={product.img} productTitle={product.name}
-                            price={product.price} />
+                            price={product.price} onFavoriteChanged={() => this.favoriteChangeHandler(product.id)}/>
                     )) : ''}
                 </div>
             </div>

@@ -7,6 +7,7 @@ import Login from './components/login/login';
 import ResultItems from './components/result-items/result-items';
 import ProductPage from './components/product-page/product-page';
 import Profile from './components/profile/profile';
+import MyShops from './components/my-shops/my-shops';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/search' component={ResultItems} />
           <Route path={'/product/:id'} component={ProductPage} />
           <Route path={'/profile'} component={Profile}/>
+          <Route path={'/shops'} comopnent={MyShops} />
         </Switch>
       </BrowserRouter>
     </div>
