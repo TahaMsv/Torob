@@ -16,8 +16,9 @@ export default class ResultItems extends React.Component {
         super(props);
     }
 
-    sendSearchReq(searchValue, type, sortby) {
-        const url = `http://127.0.0.1:3002/search?${searchValue ? 'value='+searchValue:''}&${type ? 'type='+type:''}&${sortby ? 'sortby='+sortby:''}`;
+    sendSearchReq(searchValue, type, sortby, minpr, maxpr) {
+        const url = 
+        `http://127.0.0.1:3002/search?${searchValue ? 'value='+searchValue:''}&${type ? 'type='+type:''}&${sortby ? 'sortby='+sortby:''}&${minpr ? 'minprice='+minpr:''}&${maxpr ? 'maxprice='+maxpr:''}`;
         fetch(url, {
             method: "GET",
             headers: {
@@ -42,8 +43,10 @@ export default class ResultItems extends React.Component {
         const searchValue = params.get('value');
         const type = params.get('type');
         const sortby = params.get('sortby');
+        const minpr = params.get('minprice');
+        const maxpr = params.get('maxprice');
         this.setState({sortby})
-        this.sendSearchReq(searchValue, type, sortby);
+        this.sendSearchReq(searchValue, type, sortby, minpr, maxpr);
         const mockValue = [
             {
                 id: 3,
@@ -98,10 +101,12 @@ export default class ResultItems extends React.Component {
         const params = new URLSearchParams(search);
         const searchValue = params.get('value');
         const type = params.get('type');
-        
+        const minpr = params.get('minprice');
+        const maxpr = params.get('maxprice');
+
         this.setState({sortby});
 
-        window.location.href = `http://127.0.0.1:3001/search?${searchValue ? 'value='+searchValue:''}&${type ? 'type='+type:''}&${'sortby='+sortby}`;
+        window.location.href = `http://127.0.0.1:3001/search?${searchValue ? 'value='+searchValue:''}&${type ? 'type='+type:''}&${'sortby='+sortby}&${minpr ? 'minprice='+minpr:''}&${maxpr ? 'maxprice='+maxpr:''}`;
         this.sendSearchReq(searchValue, type, sortby);
     }
 
