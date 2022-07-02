@@ -44,7 +44,6 @@ export default class MyReports extends React.Component {
     }
 
     async componentDidMount() {
-        console.log('ssssssssssssss')
         await this.fetchMyReports();
         console.log(this.state.reports);
         const mockData = [

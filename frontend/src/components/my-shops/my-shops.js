@@ -94,43 +94,6 @@ export function MyShops() {
     fetchData();
   }
 
-  const mockData = [
-    {
-      id: 3,
-      name: "لنوو آیدیا پد",
-      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-      leastPrice: 200000,
-      dateAdded: "1401/2/31",
-      isFavorited: true,
-      isAdded: false
-    }, {
-      id: 4,
-      name: "لنوو آیدیا پد",
-      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-      leastPrice: 200000,
-      dateAdded: "1401/2/31",
-      isFavorited: true,
-      isAdded: false
-    },{
-      id: 1,
-      name: "لنوو آیدیا پد",
-      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-      leastPrice: 200000,
-      dateAdded: "1401/2/31",
-      isFavorited: true,
-      isAdded: false
-    },{
-      id: 2,
-      name: "لنوو آیدیا پد",
-      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-      leastPrice: 200000,
-      dateAdded: "1401/2/31",
-      isFavorited: true,
-      isAdded: false
-    },
-  ]
-
-
   const onAddStore = async (event) => {
     event.preventDefault();
     const store = {

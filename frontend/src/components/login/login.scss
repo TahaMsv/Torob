@@ -30,6 +30,25 @@
             padding: 0 10px;
         }
 
+
+        .password-wrapper {
+            display: flex;
+            position: relative;
+
+            input {
+                flex: 1;
+            }
+
+            .show-password {
+                display: grid;
+                place-items: center;
+                position: absolute;
+                left: 1.5rem;
+                top: 0;
+                bottom: 0;
+            }
+        }
+
         .checkbox-container {
             display: flex;
             justify-content: space-between;
