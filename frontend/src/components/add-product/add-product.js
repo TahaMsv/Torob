@@ -13,7 +13,7 @@ import {
 } from "react-bootstrap";
 import './add-product.scss'
 
-export function AddProduct(props){
+export function AddProduct(props) {
 
     const [selectedItems, setSelectedItems] = useState([]);
 
@@ -34,67 +34,62 @@ export function AddProduct(props){
     }
 
         return (
-                   <ThemeProvider dir={"rtl"}>
-                       <Modal show={props.show} onHide={() => props.setShow(false)} size={"lg"}>
-                           <ModalHeader className="justify-content-between" closeButton>
-                               <ModalTitle>افزودن کالا</ModalTitle>
-                           </ModalHeader>
-                           <ModalBody>
-                               <Form>
-                                   <FormGroup>
-                                       <Form.Label>دسته بندی محصول را انتخاب کنید:</Form.Label>
-                                       <Form.Select>
-                                           <option>
-                                               تبلت
-                                           </option>
-                                           <option>
-                                               گوشی
-                                           </option>
-                                           <option>
-                                               لپتاپ
-                                           </option>
-                                       </Form.Select>
-                                   </FormGroup>
-                                   <Container>
-                                       <Row>
-                                           <Col>
-                                               <FormGroup>
-                                                   <FormLabel>
-                                                       نوع کالا را انتخاب کنید:
-                                                   </FormLabel>
-                                               </FormGroup>
-                                           </Col>
-                                       </Row>
-                                       <div className="items-container">
-                                           {props.currentShop.items.map(item => (
-                                                   <Card style={{ width: '16rem'}} id={item.id} onClick={() => handleAddRemove(item)}>
-                                                       <Card.Img variant="top" src={item.img} />
-                                                       <Card.ImgOverlay>
-                                                           <input type={"checkbox"}
-                                                                  checked={selectedItems.includes(item)}/>
-                                                       </Card.ImgOverlay>
-                                                       <Card.Body>
-                                                           <Card.Title>{item.name}</Card.Title>
-                                                           <Card.Text>
-                                                               Some quick example text to build on the card title and make up the bulk of
-                                                               the card's content.
-                                                           </Card.Text>
-
-                                                       </Card.Body>
-                                                   </Card>
-                                           ))}
-                                       </div>
-                                       <Row>
-                                           <Col md={1}>
-                                               <Button onClick={() => onConfirm()}>
-                                                   تایید
-                                               </Button>
-                                           </Col>
-                                       </Row>
-                                   </Container>
-                               </Form>
-                           </ModalBody>
-                       </Modal>
-                   </ThemeProvider>
+            <ThemeProvider dir={"rtl"}>
+                <Modal show={props.show} onHide={() => props.setShow(false)} size={"lg"}>
+                    <ModalHeader className="justify-content-between" closeButton>
+                        <ModalTitle>افزودن کالا</ModalTitle>
+                    </ModalHeader>
+                    <ModalBody>
+                        <Form>
+                            <FormGroup>
+                                <Form.Label>دسته بندی محصول را انتخاب کنید:</Form.Label>
+                                <Form.Select>
+                                    <option>
+                                        تبلت
+                                    </option>
+                                    <option>
+                                        گوشی
+                                    </option>
+                                    <option>
+                                        لپتاپ
+                                    </option>
+                                </Form.Select>
+                            </FormGroup>
+                            <Container>
+                                <Row>
+                                    <Col>
+                                        <FormGroup>
+                                            <FormLabel>
+                                                نوع کالا را انتخاب کنید:
+                                            </FormLabel>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                                <div className="items-container">
+                                    {props.allProducts.map(item => (
+                                            <Card style={{ width: '16rem'}} id={item.id} onClick={() => handleAddRemove(item)}>
+                                                <Card.Img variant="top" src={item.img} />
+                                                <Card.ImgOverlay>
+                                                    <input type={"checkbox"}
+                                                            checked={selectedItems.includes(item)}/>
+                                                </Card.ImgOverlay>
+                                                <Card.Body>
+                                                    <Card.Title>{item.name}</Card.Title>
+                                                </Card.Body>
+                                            </Card>
+                                    ))}
+                                </div>
+                                <Row>
+                                    <Col md={1}>
+                                        <Button onClick={() => onConfirm()}>
+                                            تایید
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+            </ThemeProvider>
         )
 }

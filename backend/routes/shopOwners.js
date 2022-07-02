@@ -29,7 +29,6 @@ router.post('/addstore', authorization, async function (req, res, next) {
     return error(res, "permission denied", 400);
 });
 
-
 router.get('/stores', authorization, async function (req, res, next) {
     const owner = await (StoreOwner.findOne({ email: req.user.email }));
     if (owner) {

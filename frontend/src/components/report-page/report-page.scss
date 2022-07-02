@@ -1,31 +1,12 @@
-.report-wrapper {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-
-    .report-content {
-        width: 500px;
-        background-color: #fff;
-        padding: 0 20px 20px;
-        border-radius: 3px;
-        display: flex;
-        flex-direction: column;
-        gap:15px;
-
+.report-modal {
+    .report-footer {
         .buttons {
             width: 100%;
             display: flex;
             width: 100%;
             gap: 10px;
         }
-
+        
         button {
             color: white;
             height: 40px;
@@ -33,37 +14,37 @@
             width: 100%;
             cursor: pointer;
         }
-
-        .submit-btn {
-            background: var(--light-green);
+    }
+    
+    .submit-btn {
+        background: var(--light-green);
+    }
+    
+    .close-btn {
+        background-color: red;
+    }
+    
+    .report-body {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+    
+        label {
+            font-size: 110%;
         }
-
-        .close-btn {
-            background-color: red;
+    
+        select {
+            margin: 10px 0;
+            border: 1px solid gray;
+            padding: 5px;
+            outline: none;
+            border-radius: 3px;
         }
-
-        .report-body {
-            display: flex;
-            flex-direction: column;
-            text-align: right;
-
-            label {
-                font-size: 110%;
-            }
-
-            select {
-                margin: 10px 0;
-                border: 1px solid gray;
-                padding: 5px;
-                outline: none;
-                border-radius: 3px;
-            }
-
-            textarea {
-                outline: none;
-                border: 1px solid gray;
-                border-radius: 3px;
-            }
+    
+        textarea {
+            outline: none;
+            border: 1px solid gray;
+            border-radius: 3px;
         }
     }
 }

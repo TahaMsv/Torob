@@ -2,3 +2,14 @@ button[type="submit"] {
   float: right;
   margin-top: 2rem;
 }
+
+.add-option-create-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  button {
+    display: flex;
+  }
+}

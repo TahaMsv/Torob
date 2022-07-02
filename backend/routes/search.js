@@ -5,11 +5,11 @@ const error = require("../utilities/errorFunction");
 const authorization = require('../middlewares/user-auth');
 
 const Product = mongoose.model('Product');
-const NormalUser = mongoose.model('NormalUser');
+const User = mongoose.model('User');
 
 router.get('/', authorization, async function (req, res, next) {
     const { value, sortby, type, minprice, maxprice } = req.query;
-    const user = await (NormalUser.findOne({ email: req.user.email }));
+    const user = await (User.findOne({ email: req.user.email }));
     let products;
     if (value) {
         products = await (Product.find({ "name": { "$regex": value, "$options": "i" } }));
@@ -31,7 +31,7 @@ router.get('/', authorization, async function (req, res, next) {
             });
 
             let isFavorited = false;
-            user.favoriteProducts.map(p => {
+            user.favoriteProducts?.map(p => {
                 if (p === product.id) {
                     isFavorited = true;
                 }

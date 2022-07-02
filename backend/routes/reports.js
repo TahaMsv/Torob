@@ -51,7 +51,6 @@ router.get('/:shop_id', authorization, async function (req, res, next) {
 
   const promises = reports.map(async report => {
     const user = await (User.findOne({ id: report.userID }));
-    console.log
     if (user) {
       return {
         "userName": user.name,
