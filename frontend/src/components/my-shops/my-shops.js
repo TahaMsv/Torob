@@ -10,7 +10,7 @@ import {
   Col,
   Card,
   FormControl,
-  CardImg,
+  CardImg, ListGroup, ListGroupItem,
 } from "react-bootstrap";
 import { AddProduct } from "../add-product/add-product";
 import { NewProduct } from "../create-product/create-product";
@@ -18,7 +18,54 @@ import { NewProduct } from "../create-product/create-product";
 export function MyShops() {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showCreateProductModal, setShowCreateProductModal] = useState(false);
-  const [addedItems, addItems] = useState([]);
+  const [currentShop, setCurrentShop] = useState(    {id: 2, name: "غرب گستران شرق", items:mockData},
+  )
+
+  const addItems = (addedItems) => {
+    addedItems.forEach(item => item.isAdded = true);
+  }
+
+  const mockData = [
+    {
+      id: 3,
+      name: "لنوو آیدیا پد",
+      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
+      leastPrice: 200000,
+      dateAdded: "1401/2/31",
+      isFavorited: true,
+      isAdded: false
+    }, {
+      id: 4,
+      name: "لنوو آیدیا پد",
+      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
+      leastPrice: 200000,
+      dateAdded: "1401/2/31",
+      isFavorited: true,
+      isAdded: false
+    },{
+      id: 1,
+      name: "لنوو آیدیا پد",
+      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
+      leastPrice: 200000,
+      dateAdded: "1401/2/31",
+      isFavorited: true,
+      isAdded: false
+    },{
+      id: 2,
+      name: "لنوو آیدیا پد",
+      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
+      leastPrice: 200000,
+      dateAdded: "1401/2/31",
+      isFavorited: true,
+      isAdded: false
+    },
+  ]
+
+  const stores = [
+    {id: 1, name: "شرق گستران غرب", items: mockData},
+    {id: 2, name: "غرب گستران شرق", items:[]},
+    {id: 3, name: "بهتخسیهتبخهست", items:[]}
+  ]
 
   const onAddStore = async (event) => {
     event.preventDefault();
@@ -71,18 +118,27 @@ export function MyShops() {
               </Button>
             </Form>
           </Card>
-        </Col>
+        </Col> {/*{currentShop.items.map((item) => (*/}
+              {/*  <div>*/}
+              {/*    <img src={item.img} style={{ width: "5rem" }} />*/}
+              {/*    <h5>{item.name}</h5>*/}
+              {/*    <span>{item.price}</span>*/}
+              {/*  </div>*/}
+              {/*))}*/}
         <Col>
-          <Card
-            className="justify-content-center align-items-center"
-            style={{ height: "100%" }}
-          >
-            <Card.Img className="add-img" src={addImg}></Card.Img>
-            <Card.ImgOverlay className="">
-              <Card.Subtitle className="card-subtitle">
-                عکس را بارگذاری کنید
-              </Card.Subtitle>
-            </Card.ImgOverlay>
+          <Card>
+          <Card.Header className="card-header">
+            فروشگاه های فعلی
+          </Card.Header>
+            <Card.Body>
+              <ListGroup>
+                {stores.map(store =>
+                <ListGroupItem action active={currentShop.id === store.id}
+                               onClick={() => setCurrentShop(store)} style={{textAlign:"start"}}>{store.name}
+                </ListGroupItem>
+                )}
+              </ListGroup>
+            </Card.Body>
           </Card>
         </Col>
       </Row>
@@ -106,7 +162,7 @@ export function MyShops() {
               </div>
             </Card.Header>
             <Card.Body>
-              {addedItems.map((item) => (
+              {currentShop.items.filter(item => item.isAdded).map((item) => (
                 <div>
                   <img src={item.img} style={{ width: "5rem" }} />
                   <h5>{item.name}</h5>
@@ -121,6 +177,7 @@ export function MyShops() {
         show={showAddProductModal}
         setShow={setShowAddProductModal}
         addItems={addItems}
+        currentShop={currentShop}
       ></AddProduct>
       <NewProduct
         show={showCreateProductModal}
