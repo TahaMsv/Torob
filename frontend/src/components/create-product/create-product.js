@@ -34,7 +34,7 @@ export function NewProduct(props) {
             mode: 'cors',
             body: JSON.stringify({
                 name: targets[0].value,
-                suggestedPrice: targets[2].value,
+                suggestedPrice: +targets[2].value,
                 img: targets[4].value,
                 link: targets[3].value,
                 productType: targets[1].value,
@@ -48,6 +48,7 @@ export function NewProduct(props) {
         });
 
         props.setShow(false);
+        props.afterCreate();
         setProductDetails([]);
     }
 

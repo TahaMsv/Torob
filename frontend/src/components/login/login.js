@@ -10,6 +10,7 @@ export default class Login extends React.Component {
         emailNotExists: false
     }
     fetchLogin() {
+        console.log('logiiiinnn');
         fetch('http://127.0.0.1:3002/auth/login', {
             method: "POST",
             mode: 'cors',
@@ -26,6 +27,7 @@ export default class Login extends React.Component {
             return result.json();
         })
         .then((json) => {
+            console.log(json);
             if (json.message === 'successful') {
                 localStorage.setItem('token', json.token);
                 localStorage.setItem('isUserLoggedIn', true);

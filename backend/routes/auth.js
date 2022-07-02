@@ -5,8 +5,7 @@ const NormalUser = mongoose.model('NormalUser');
 const AdminUser = mongoose.model('AdminUser');
 const StoreOwner = mongoose.model('StoreOwner');
 const error = require("../utilities/errorFunction");
-const { generateOTP, sendSMS } = require('../servises/otp');
-
+// const { generateOTP, sendMail } = require('../servises/otp');
 
 router.post('/signup', async (req, res, next) => {
     const { email, name, phone, password, userType, stores } = req.body;
@@ -63,14 +62,12 @@ router.post('/signup', async (req, res, next) => {
         return error(res, "userType does not exist", 401);
     }
 
-    // console.log("here66");
     // try {
-    //     console.log("here68");
-    //     await sendSMS({
+    //     await sendMail({
+    //         to: "tahamousavi.sbu@gmail.com",
     //         OTP: otpGenerated,
     //     });
-    //     console.log("here72");
-    // } catch (err) {
+    // } catch (error) {
     //     return error(res, 'Unable to sign up, Please try again later', 401);
     // }
 
@@ -130,6 +127,7 @@ router.post('/login', async (req, res, next) => {
         if (storeOwner) {
             if (storeOwner.password !== password) return error(res, "wrong password", 400);
             const token = storeOwner.getJWT();
+            console.log(token);
             return res.status(200).json({ token, userType, message: "successful" });
         }
     }
