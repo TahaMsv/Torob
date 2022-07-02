@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
 import "./my-shops.scss";
-import {Button, Card, Col, Container, Form, FormControl, ListGroup, ListGroupItem, Row,} from "react-bootstrap";
+import {Badge, Button, Card, Col, Container, Form, FormControl, ListGroup, ListGroupItem, Row,} from "react-bootstrap";
 import {AddProduct} from "../add-product/add-product";
 import {NewProduct} from "../create-product/create-product";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 export function MyShops() {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
@@ -11,11 +13,32 @@ export function MyShops() {
   const [stores, setStores] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
 
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
+
   useEffect( () => {
     async function fetchStores() {
       const res = await fetch("http://127.0.0.1:3002/shopowner/stores", {
         method: "GET",
         headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
           "Content-type": "application/json; charset=UTF-8",
         },
       });
@@ -132,7 +155,7 @@ export function MyShops() {
               </Button>
             </Form>
           </Card>
-        </Col> 
+        </Col>
         <Col>
           <Card>
           <Card.Header className="card-header">
@@ -141,7 +164,7 @@ export function MyShops() {
             <Card.Body>
               <ListGroup>
                 {stores.map(store =>
-                <ListGroupItem action active={currentShop.id === store.id}
+                <ListGroupItem variant={"secondary"} action active={currentShop.id === store.id}
                                onClick={() => setCurrentShop(store)} style={{textAlign:"start"}}>{store.name}
                 </ListGroupItem>
                 )}
@@ -157,7 +180,7 @@ export function MyShops() {
               <div className="add-item-header">
                 <span>کالا های فروشگاه {currentShop.name} :</span>
                 <div className="btn-container">
-                  <Button onClick={() => setShowAddProductModal(true)}>
+                  <Button className="addBtn" onClick={() => setShowAddProductModal(true)}>
                     +
                   </Button>
                   <Button
@@ -170,13 +193,24 @@ export function MyShops() {
               </div>
             </Card.Header>
             <Card.Body>
-              {currentShop.items?.filter(item => item.isAdded).map((item) => (
-                <div>
-                  <img src={item.img} style={{ width: "5rem" }} />
-                  <h5>{item.name}</h5>
-                  <span>{item.price}</span>
-                </div>
-              ))}
+              <div className="carousel-container">
+                <Carousel responsive={responsive}>
+                  {mockData.map(item => (
+                      <Card style={{ width: '16rem'}}>
+                        <Card.Img variant="top" src={item.img} />
+                        <Card.ImgOverlay>
+                          <Badge style={{float: "right"}}>{item.leastPrice}$</Badge>
+                        </Card.ImgOverlay>
+                        <Card.Body>
+                          <Card.Title>{item.name}</Card.Title>
+                          <Card.Text>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aliquid aperiam dolores eos expedita, inventore maxime minus nisi repellendus? Ad?
+                          </Card.Text>
+                        </Card.Body>
+                      </Card>
+                  ))}
+                </Carousel>
+              </div>
             </Card.Body>
           </Card>
         </Col>
