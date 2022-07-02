@@ -21,58 +21,49 @@ import './create-product.scss'
 export function NewProduct(props) {
     const [productDetails, setProductDetails] = useState([]);
 
-    useEffect(() => {
-        
-    });
-
-    const createdItem =
-        {
-            "name": "iPhone13",
-            "suggestedPrice": "62000000",
-            "details": {
-                "ram": "8GB",
-                "camera": "12Mp"
-            },
-            "img": "https://www.apple.com/de/shop/buy-iphone/iphone-13-pro",
-            "link": "google.com",
-            "productType": "laptop|lenovo",
-        };
-
     const submitProduct = async (event) => {
         event.preventDefault();
+        const targets = event.target;
+        const details = productDetails.map(item => {
+            return {[item.key]: item.value}
+        });
         const res = await fetch('http://127.0.0.1:3002/product/create', {
             method: "POST",
             mode: 'cors',
             body: JSON.stringify({
-                ...createdItem,
-                name: event.target[0].value,
-                suggestedPrice: event.target[2].value,
-                shopId: props.currentShop.id
+                name: targets[0].value,
+                suggestedPrice: targets[2].value,
+                img: targets[4].value,
+                link: targets[3].value,
+                productType: targets[1].value,
+                details,
+                shopId: props.currentShop.id,
             }),
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("token"),
                 "Content-type": "application/json; charset=UTF-8"
             }
-        })
+        });
+
+        props.setShow(false);
+        setProductDetails([]);
     }
 
     const onNewDetailAdded = () => {
-        console.log(productDetails);
-        let newDetails = productDetails;
-        newDetails.push({key: '', value: ''});
-        setProductDetails(newDetails);
+        setProductDetails([...productDetails, {key:'', value:''}])
     }
 
     const onDetailKeyChange = (val, index) => {
         let tempProductDetail = productDetails;
         tempProductDetail[index].key = val;
-        setProductDetails(tempProductDetail);
+        
+        setProductDetails([...tempProductDetail]);
     }
 
     const onDetailValueChange = (val, index) => {
         let tempProductDetail = productDetails;
         tempProductDetail[index].value = val;
-        setProductDetails(tempProductDetail);
+        setProductDetails([...tempProductDetail]);
     }
 
     return(
@@ -154,17 +145,6 @@ export function NewProduct(props) {
                                      value={detail.value} aria-label="value"/>
                             </InputGroup>
                             ))
-
-                            // productDetails.forEach((element, index) => {
-                            //     return (
-                            //         <InputGroup className="mb-3">
-                            //             <FormControl onChange={(e) => onDetailKeyChange(e.target.value, index)} 
-                            //                 value={element.key} aria-label="key" />
-                            //             <FormControl onChange={(e) => onDetailValueChange(e.target.value, index)}
-                            //                 value={element.value} aria-label="value"/> 
-                            //         </InputGroup>
-                            //     )
-                            // })
                         }
                         
                     </FormGroup>

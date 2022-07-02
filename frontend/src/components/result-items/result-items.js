@@ -111,7 +111,6 @@ export default class ResultItems extends React.Component {
     }
 
     setMinMaxPrice(minpr, maxpr) {
-        console.log(minpr, maxpr)
         const search = this.props.location.search;
         const params = new URLSearchParams(search);
         const searchValue = params.get('value');

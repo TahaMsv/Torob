@@ -13,6 +13,7 @@ router.post('/create', authorization, async function (req, res, next) {
     const { name, shopId, suggestedPrice, details, img, link, productType } = req.body;
     const owner = await (StoreOwner.findOne({ email: req.user.email }));
     if (owner) {
+        console.log(owner.stores);
         if (owner.stores.includes(shopId)) {
             const store = await (Store.findOne({ id: shopId }));
             const sameProduct = await (Product.findOne({ name }));
@@ -45,12 +46,13 @@ router.post('/create', authorization, async function (req, res, next) {
             }
             else {
                 const productId = await Product.count() + 1;
+                const map = new Map(Object.entries(details));
                 const product = new Product({
                     id: productId,
                     name,
                     type: productType,
                     imageUrl: img,
-                    details,
+                    details: map,
                     link
                 });
 

@@ -32,7 +32,6 @@ router.post('/addstore', authorization, async function (req, res, next) {
 
 router.get('/stores', async function (req, res, next) {
     const stores = await (Store.find({}).sort({ id: "descending" }));
-    console.log(stores);
     const responseList = stores.map(store => {
         return {
             "id": store.id,

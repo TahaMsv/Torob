@@ -5,7 +5,7 @@ const NormalUser = mongoose.model('NormalUser');
 const AdminUser = mongoose.model('AdminUser');
 const StoreOwner = mongoose.model('StoreOwner');
 const error = require("../utilities/errorFunction");
-const { generateOTP, sendMail } = require('../servises/otp');
+// const { generateOTP, sendMail } = require('../servises/otp');
 
 router.post('/signup', async (req, res, next) => {
     const { email, name, phone, password, userType, stores } = req.body;
@@ -13,49 +13,48 @@ router.post('/signup', async (req, res, next) => {
         return error(res, "Name, email or password is empty", 400);
     }
     let newUser;
-    let otpGenerated;
+    // let otpGenerated;
     if (userType === "normal") {
         const otherSameUser = await (NormalUser.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
 
-        otpGenerated = generateOTP();
+        // otpGenerated = generateOTP();
         newUser = new NormalUser({
             id: newUserId,
             name,
             email,
             password,
             phone,
-            otp: otpGenerated
+            // otp: otpGenerated
         });
 
     } else if (userType === "admin") {
         const otherSameUser = await (AdminUser.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
-        otpGenerated = generateOTP();
+        // otpGenerated = generateOTP();
         newUser = new AdminUser({
             id: newUserId,
             name,
             email,
             password,
-            otp: otpGenerated
+            // otp: otpGenerated
         });
     } else if (userType === "shopOwner") {
         const otherSameUser = await (StoreOwner.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
-        otpGenerated = generateOTP();
+        // otpGenerated = generateOTP();
         newUser = new StoreOwner({
             id: newUserId,
             name,
             email,
             password,
             phone,
-            otp: otpGenerated
+            // otp: otpGenerated
         });
         if (stores) {
-            console.log(stores);
             stores.map(store => newUser.stores.push(store));
         }
     }
@@ -90,14 +89,14 @@ router.post('/validate', async (req, res, next) => {
     if (!user) {
         return error(res, 'User not found', 401);
     }
-    if (user && user.otp !== otp) {
-        return error(res, 'Invalid OTP', 401);
-    }
+    // if (user && user.otp !== otp) {
+    //     return error(res, 'Invalid OTP', 401);
+    // }
 
     return res.status(200).json({
         email,
         token,
-        otp,
+        // otp,
         message: "successful"
     });
 

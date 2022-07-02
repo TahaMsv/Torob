@@ -9,10 +9,10 @@ const userSchema = mongoose.Schema({
     name: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String },
-    otp: {
-        type: String,
-        required: true,
-    },
+    // otp: {
+    //     type: String,
+    //     required: true,
+    // },
 }, options);
 
 userSchema.discriminator('NormalUser',
