@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Card, CardImg,
     Form,
@@ -15,36 +15,21 @@ import './add-product.scss'
 
 export function AddProduct(props){
 
-    const [selectedItems, addRemoveItem] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
 
-    const mockData = [
-        {
-            id: 3,
-            name: "لنوو آیدیا پد",
-            img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-            leastPrice: 200000,
-            dateAdded: "1401/2/31",
-            isFavorited: true
-        }, {
-            id: 4,
-            name: "لنوو آیدیا پد",
-            img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-            leastPrice: 200000,
-            dateAdded: "1401/2/31",
-            isFavorited: true
-        }
-    ];
+    useEffect(()=> {
+        setSelectedItems(props.currentShop.items.filter(item => item.isAdded))
+    }, [props.currentShop])
 
     const handleAddRemove = (item) => {
-        if (selectedItems.includes(item.id))
-            addRemoveItem(selectedItems.filter(el => el !== item.id));
+        if (selectedItems.includes(item))
+            setSelectedItems(selectedItems.filter(el => el.id !== item.id));
         else
-            addRemoveItem([...selectedItems, item.id])
+            setSelectedItems([...selectedItems, item])
     }
 
     const onConfirm = () => {
-        const addeditems = selectedItems.map(id => mockData.find((item)=> item.id === id))
-        props.addItems(addeditems)
+        props.addItems(selectedItems);
         props.setShow(false)
     }
 
@@ -81,12 +66,12 @@ export function AddProduct(props){
                                            </Col>
                                        </Row>
                                        <div className="items-container">
-                                           {mockData.map(item => (
+                                           {props.currentShop.items.map(item => (
                                                    <Card style={{ width: '16rem'}} id={item.id} onClick={() => handleAddRemove(item)}>
                                                        <Card.Img variant="top" src={item.img} />
                                                        <Card.ImgOverlay>
                                                            <input type={"checkbox"}
-                                                                  checked={selectedItems.includes(item.id)}/>
+                                                                  checked={selectedItems.includes(item)}/>
                                                        </Card.ImgOverlay>
                                                        <Card.Body>
                                                            <Card.Title>{item.name}</Card.Title>

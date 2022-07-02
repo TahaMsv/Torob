@@ -27,7 +27,6 @@ export function NewProduct(props) {
             "img": "https://www.apple.com/de/shop/buy-iphone/iphone-13-pro",
             "link": "google.com",
             "productType": "laptop|lenovo",
-            "shopId": 7
         };
 
     const submitProduct = async (event) => {
@@ -35,12 +34,17 @@ export function NewProduct(props) {
         const res = await fetch('http://127.0.0.1:3002/product/create', {
             method: "POST",
             mode: 'cors',
-            body: JSON.stringify(createdItem),
+            body: JSON.stringify({
+                ...createdItem,
+                name: event.target[0].value,
+                suggestedPrice: event.target[2].value,
+                shopId: props.currentShop.id
+            }),
             headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-        console.log(res)
     }
 
     return(

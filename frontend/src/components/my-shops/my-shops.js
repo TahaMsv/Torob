@@ -1,24 +1,85 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./my-shops.scss";
-import addImg from "../../assets/logo/add-img.svg";
-import {
-  Form,
-  Button,
-  Container,
-  Row,
-  Co,
-  Col,
-  Card,
-  FormControl,
-  CardImg,
-} from "react-bootstrap";
-import { AddProduct } from "../add-product/add-product";
-import { NewProduct } from "../create-product/create-product";
+import {Button, Card, Col, Container, Form, FormControl, ListGroup, ListGroupItem, Row,} from "react-bootstrap";
+import {AddProduct} from "../add-product/add-product";
+import {NewProduct} from "../create-product/create-product";
 
 export function MyShops() {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showCreateProductModal, setShowCreateProductModal] = useState(false);
-  const [addedItems, addItems] = useState([]);
+  const [currentShop, setCurrentShop] = useState({id: 2, name: "غرب گستران شرق", items:[]},)
+  const [stores, setStores] = useState([])
+
+
+  useEffect( () => {
+    async function fetchStores() {
+      const res = await fetch("http://127.0.0.1:3002/shopowner/stores", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      const resultStores = await res.json();
+      setStores(resultStores.filter(store => store.name).map(store => ({...store, items: []})))
+    }
+
+    async function fetchProducts() {
+      const res = await fetch("http://127.0.0.1:3002/search", {
+      method: "GET",
+      headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+          "Content-type": "application/json; charset=UTF-8"
+      }
+      })
+      const products = await res.json();
+      console.log(products)
+    }
+    fetchStores();
+    fetchProducts();
+  }, [])
+
+  const addItems = (addedItems) => {
+    currentShop.items.forEach((item) => {
+      item.isAdded = !!addedItems.includes(item);
+    })
+  }
+
+  const mockData = [
+    {
+      id: 3,
+      name: "لنوو آیدیا پد",
+      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
+      leastPrice: 200000,
+      dateAdded: "1401/2/31",
+      isFavorited: true,
+      isAdded: false
+    }, {
+      id: 4,
+      name: "لنوو آیدیا پد",
+      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
+      leastPrice: 200000,
+      dateAdded: "1401/2/31",
+      isFavorited: true,
+      isAdded: false
+    },{
+      id: 1,
+      name: "لنوو آیدیا پد",
+      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
+      leastPrice: 200000,
+      dateAdded: "1401/2/31",
+      isFavorited: true,
+      isAdded: false
+    },{
+      id: 2,
+      name: "لنوو آیدیا پد",
+      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
+      leastPrice: 200000,
+      dateAdded: "1401/2/31",
+      isFavorited: true,
+      isAdded: false
+    },
+  ]
+
 
   const onAddStore = async (event) => {
     event.preventDefault();
@@ -47,7 +108,7 @@ export function MyShops() {
       <Row>
         <Col md={8}>
           <Card className="form-card">
-            <Card.Header className="card-header">مشخصات فروشگاه </Card.Header>
+            <Card.Header className="card-header">ثبت فروشگاه جدید</Card.Header>
             <Form onSubmit={(event) => onAddStore(event)}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label className="">نام فروشگاه</Form.Label>
@@ -71,18 +132,27 @@ export function MyShops() {
               </Button>
             </Form>
           </Card>
-        </Col>
+        </Col> {/*{currentShop.items.map((item) => (*/}
+              {/*  <div>*/}
+              {/*    <img src={item.img} style={{ width: "5rem" }} />*/}
+              {/*    <h5>{item.name}</h5>*/}
+              {/*    <span>{item.price}</span>*/}
+              {/*  </div>*/}
+              {/*))}*/}
         <Col>
-          <Card
-            className="justify-content-center align-items-center"
-            style={{ height: "100%" }}
-          >
-            <Card.Img className="add-img" src={addImg}></Card.Img>
-            <Card.ImgOverlay className="">
-              <Card.Subtitle className="card-subtitle">
-                عکس را بارگذاری کنید
-              </Card.Subtitle>
-            </Card.ImgOverlay>
+          <Card>
+          <Card.Header className="card-header">
+            فروشگاه های فعلی
+          </Card.Header>
+            <Card.Body>
+              <ListGroup>
+                {stores.map(store =>
+                <ListGroupItem action active={currentShop.id === store.id}
+                               onClick={() => setCurrentShop(store)} style={{textAlign:"start"}}>{store.name}
+                </ListGroupItem>
+                )}
+              </ListGroup>
+            </Card.Body>
           </Card>
         </Col>
       </Row>
@@ -91,7 +161,7 @@ export function MyShops() {
           <Card>
             <Card.Header>
               <div className="add-item-header">
-                <span>افزودن کالا</span>
+                <span>کالا های فروشگاه {currentShop.name} :</span>
                 <div className="btn-container">
                   <Button onClick={() => setShowAddProductModal(true)}>
                     +
@@ -106,7 +176,7 @@ export function MyShops() {
               </div>
             </Card.Header>
             <Card.Body>
-              {addedItems.map((item) => (
+              {currentShop.items?.filter(item => item.isAdded).map((item) => (
                 <div>
                   <img src={item.img} style={{ width: "5rem" }} />
                   <h5>{item.name}</h5>
@@ -121,10 +191,12 @@ export function MyShops() {
         show={showAddProductModal}
         setShow={setShowAddProductModal}
         addItems={addItems}
+        currentShop={currentShop}
       ></AddProduct>
       <NewProduct
         show={showCreateProductModal}
         setShow={setShowCreateProductModal}
+        currentShop={currentShop}
       ></NewProduct>
     </Container>
   );
