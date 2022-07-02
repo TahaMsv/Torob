@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Card, CardImg,
     Form,
@@ -15,13 +15,17 @@ import './add-product.scss'
 
 export function AddProduct(props){
 
-    const [selectedItems, addRemoveItem] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
+
+    useEffect(()=> {
+        setSelectedItems(props.currentShop.items.filter(item => item.isAdded))
+    }, [props.currentShop])
 
     const handleAddRemove = (item) => {
         if (selectedItems.includes(item))
-            addRemoveItem(selectedItems.filter(el => el.id !== item.id));
+            setSelectedItems(selectedItems.filter(el => el.id !== item.id));
         else
-            addRemoveItem([...selectedItems, item])
+            setSelectedItems([...selectedItems, item])
     }
 
     const onConfirm = () => {
