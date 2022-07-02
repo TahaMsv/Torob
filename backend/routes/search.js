@@ -15,8 +15,8 @@ router.get('/', authorization, async function (req, res, next) {
         products = await (Product.find({ "name": { "$regex": value, "$options": "i" } }));
     } else if (type) {
         products = await (Product.find({ "type": { "$regex": type, "$options": "i" } }));
-    }else{
-        products = await (Product.find({ "type": { "$regex": type, "$options": "i" } }));
+    } else {
+        products = await (Product.find({}));
     }
 
     let returndList;

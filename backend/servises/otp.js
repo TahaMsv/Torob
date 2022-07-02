@@ -2,7 +2,7 @@ const otpGenerator = require('otp-generator');
 const MAIL_SETTINGS = {
     service: 'gmail',
     auth: {
-        user: "tahamsvj",
+        user: "tahamsvj@gmail.com",
         pass: "mcmrvcfiglstgsoc",
     },
 };

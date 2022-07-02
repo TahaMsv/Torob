@@ -19,40 +19,40 @@ router.post('/signup', async (req, res, next) => {
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
 
-        // otpGenerated = generateOTP();
+        otpGenerated = generateOTP();
         newUser = new NormalUser({
             id: newUserId,
             name,
             email,
             password,
             phone,
-            // otp: otpGenerated
+            otp: otpGenerated
         });
 
     } else if (userType === "admin") {
         const otherSameUser = await (AdminUser.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
-        // otpGenerated = generateOTP();
+        otpGenerated = generateOTP();
         newUser = new AdminUser({
             id: newUserId,
             name,
             email,
             password,
-            // otp: otpGenerated
+            otp: otpGenerated
         });
     } else if (userType === "shopOwner") {
         const otherSameUser = await (StoreOwner.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
-        // otpGenerated = generateOTP();
+        otpGenerated = generateOTP();
         newUser = new StoreOwner({
             id: newUserId,
             name,
             email,
             password,
             phone,
-            // otp: otpGenerated
+            otp: otpGenerated
         });
         if (stores) {
             console.log(stores);
@@ -65,7 +65,7 @@ router.post('/signup', async (req, res, next) => {
 
     // try {
     //     await sendMail({
-    //         to: "tahamsvj@gmail.com",
+    //         to: "tahamousavi.sbu@gmail.com",
     //         OTP: otpGenerated,
     //     });
     // } catch (error) {
