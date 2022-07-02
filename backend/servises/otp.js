@@ -1,55 +1,30 @@
 const otpGenerator = require('otp-generator');
-const messagebird = require('messagebird');
-
-const error = require("../utilities/errorFunction");
-// const MAIL_SETTINGS = {
-//     service: 'gmail',
-//     auth: {
-//         user: "securesally@gmail.com",
-//         pass: "mcmrvcfiglstgsoc",
-//     },
-// };
+const MAIL_SETTINGS = {
+    service: 'gmail',
+    auth: {
+        user: "tahamsvj@gmail.com",        
+        pass: "onbamchhsngtpecr",
+    },
+};
 const nodemailer = require('nodemailer');
-// const transporter = nodemailer.createTransport(MAIL_SETTINGS);
+const transporter = nodemailer.createTransport(MAIL_SETTINGS);
 
 
 module.exports.generateOTP = () => {
-    const OTP = otpGenerator.generate(10, {
+    const OTP = otpGenerator.generate(4, {
         upperCaseAlphabets: true,
         specialChars: false,
     });
     return OTP;
 };
 
-module.exports.sendSMS = async (params) => {
+module.exports.sendMail = async (params) => {
+    console.log("here22");
     try {
-<<<<<<< HEAD
-        console.log("here24");
-        var number = "+98" + "9116455064";
-        console.log("here26");
-        messagebird.verify.create(number,
-            {
-                originator: 'TorobClone',
-                timeout: 600,
-                template: 'Your verification code is %token.'
-            },
-            function (err, response) {
-                console.log("here36");
-                if (err) {
-                    console.log("here38");
-                    return error(res, "SMS Error", 401);
-                }
-                console.log(response);
-
-            });
-        console.log("here40");
-
-    } catch (err) {
-        return error(res, error, 401);
-=======
+        console.log("here23");
         let info = await transporter.sendMail({
             from: MAIL_SETTINGS.auth.user,
-            to: params.to,
+            to: "tahamousavi.sbu@gmail.com",
             subject: 'Hello ✔',
             html: `
         <div
@@ -63,10 +38,11 @@ module.exports.sendSMS = async (params) => {
      </div>
       `,
         });
+        console.log("here40");
         return info;
     } catch (error) {
+        console.log(error);
         return false;
->>>>>>> ced3de45a76a97c7fbae1b1a1e26ea8223188373
     }
 };
 

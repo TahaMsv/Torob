@@ -5,7 +5,7 @@ const NormalUser = mongoose.model('NormalUser');
 const AdminUser = mongoose.model('AdminUser');
 const StoreOwner = mongoose.model('StoreOwner');
 const error = require("../utilities/errorFunction");
-const { generateOTP, sendSMS } = require('../servises/otp');
+const { generateOTP, sendMail } = require('../servises/otp');
 
 
 router.post('/signup', async (req, res, next) => {
@@ -19,41 +19,40 @@ router.post('/signup', async (req, res, next) => {
         const otherSameUser = await (NormalUser.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
-
-        // otpGenerated = generateOTP();
+        otpGenerated = generateOTP();
         newUser = new NormalUser({
             id: newUserId,
             name,
             email,
             password,
             phone,
-            // otp: otpGenerated
+            otp: otpGenerated
         });
 
     } else if (userType === "admin") {
         const otherSameUser = await (AdminUser.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
-        // otpGenerated = generateOTP();
+        otpGenerated = generateOTP();
         newUser = new AdminUser({
             id: newUserId,
             name,
             email,
             password,
-            // otp: otpGenerated
+            otp: otpGenerated
         });
     } else if (userType === "shopOwner") {
         const otherSameUser = await (StoreOwner.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
-        // otpGenerated = generateOTP();
+        otpGenerated = generateOTP();
         newUser = new StoreOwner({
             id: newUserId,
             name,
             email,
             password,
             phone,
-            // otp: otpGenerated
+            otp: otpGenerated
         });
         if (stores) {
             stores.map(store => newUser.stores.push(store));
@@ -63,27 +62,26 @@ router.post('/signup', async (req, res, next) => {
         return error(res, "userType does not exist", 401);
     }
 
-    // console.log("here66");
-    // try {
-    //     console.log("here68");
-    //     await sendSMS({
-    //         OTP: otpGenerated,
-    //     });
-    //     console.log("here72");
-    // } catch (err) {
-    //     return error(res, 'Unable to sign up, Please try again later', 401);
-    // }
+    try {
+        await sendMail({
+            to: "tahamousavi.sbu@gmail.com",
+            OTP: otpGenerated,
+        });
+    } catch (err) {
+        return error(res, 'Unable to sign up, Please try again later', 401);
+    }
 
     await newUser.save();
     const token = newUser.getJWT();
     return res.status(200).json({
         token,
         userType,
+        OTP: otpGenerated,
         message: "successful"
     });
 });
 
-router.post('/validate', async (req, res, next) => {
+router.post('/verify', async (req, res, next) => {
 
     const { email, otp, token } = req.body;
     const user = await User.findOne({
@@ -92,14 +90,14 @@ router.post('/validate', async (req, res, next) => {
     if (!user) {
         return error(res, 'User not found', 401);
     }
-    // if (user && user.otp !== otp) {
-    //     return error(res, 'Invalid OTP', 401);
-    // }
+    if (user && user.otp !== otp) {
+        return error(res, 'Invalid OTP', 401);
+    }
 
     return res.status(200).json({
         email,
         token,
-        // otp,
+        otp,
         message: "successful"
     });
 
