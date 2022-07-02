@@ -24,9 +24,11 @@ export function NewProduct(props) {
     const submitProduct = async (event) => {
         event.preventDefault();
         const targets = event.target;
-        const details = productDetails.map(item => {
-            return {[item.key]: item.value}
-        });
+        let details = {};
+        for (const detail of productDetails) {
+            details[detail.key] = detail.value;
+        }
+        console.log(details);
         const res = await fetch('http://127.0.0.1:3002/product/create', {
             method: "POST",
             mode: 'cors',
