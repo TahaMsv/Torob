@@ -11,10 +11,11 @@ router.get('/', authorization, async function (req, res, next) {
     const { value, sortby, type, minprice, maxprice } = req.query;
     const user = await (NormalUser.findOne({ email: req.user.email }));
     let products;
-    console.log("here14");
     if (value) {
         products = await (Product.find({ "name": { "$regex": value, "$options": "i" } }));
     } else if (type) {
+        products = await (Product.find({ "type": { "$regex": type, "$options": "i" } }));
+    }else{
         products = await (Product.find({ "type": { "$regex": type, "$options": "i" } }));
     }
 

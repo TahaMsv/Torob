@@ -5,8 +5,7 @@ const NormalUser = mongoose.model('NormalUser');
 const AdminUser = mongoose.model('AdminUser');
 const StoreOwner = mongoose.model('StoreOwner');
 const error = require("../utilities/errorFunction");
-const authorization = require('../middlewares/user-auth');
-const jwt = require('jsonwebtoken');
+const { generateOTP, sendMail } = require('../servises/otp');
 
 router.post('/signup', async (req, res, next) => {
     const { email, name, phone, password, userType, stores } = req.body;
@@ -14,40 +13,46 @@ router.post('/signup', async (req, res, next) => {
         return error(res, "Name, email or password is empty", 400);
     }
     let newUser;
+    let otpGenerated;
     if (userType === "normal") {
         const otherSameUser = await (NormalUser.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
+
+        // otpGenerated = generateOTP();
         newUser = new NormalUser({
             id: newUserId,
             name,
             email,
             password,
             phone,
+            // otp: otpGenerated
         });
 
     } else if (userType === "admin") {
         const otherSameUser = await (AdminUser.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
-        console.log(newUserId);
+        // otpGenerated = generateOTP();
         newUser = new AdminUser({
             id: newUserId,
             name,
             email,
             password,
+            // otp: otpGenerated
         });
     } else if (userType === "shopOwner") {
         const otherSameUser = await (StoreOwner.findOne({ email }));
         if (otherSameUser) return error(res, "Email already exist", 401);
         const newUserId = await User.count() + 1;
-        console.log(newUserId);
+        // otpGenerated = generateOTP();
         newUser = new StoreOwner({
             id: newUserId,
             name,
             email,
             password,
             phone,
+            // otp: otpGenerated
         });
         if (stores) {
             console.log(stores);
@@ -58,6 +63,15 @@ router.post('/signup', async (req, res, next) => {
         return error(res, "userType does not exist", 401);
     }
 
+    // try {
+    //     await sendMail({
+    //         to: "tahamsvj@gmail.com",
+    //         OTP: otpGenerated,
+    //     });
+    // } catch (error) {
+    //     return error(res, 'Unable to sign up, Please try again later', 401);
+    // }
+
     await newUser.save();
     const token = newUser.getJWT();
     return res.status(200).json({
@@ -65,6 +79,28 @@ router.post('/signup', async (req, res, next) => {
         userType,
         message: "successful"
     });
+});
+
+router.post('/validate', async (req, res, next) => {
+
+    const { email, otp, token } = req.body;
+    const user = await User.findOne({
+        email,
+    });
+    if (!user) {
+        return error(res, 'User not found', 401);
+    }
+    if (user && user.otp !== otp) {
+        return error(res, 'Invalid OTP', 401);
+    }
+
+    return res.status(200).json({
+        email,
+        token,
+        otp,
+        message: "successful"
+    });
+
 });
 
 router.post('/login', async (req, res, next) => {

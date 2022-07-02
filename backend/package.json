@@ -15,7 +15,9 @@
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.4.1",
         "mongoose-extend-schema": "^1.0.0",
-        "morgan": "~1.9.1"
+        "morgan": "~1.9.1",
+        "nodemailer": "^6.7.6",
+        "otp-generator": "^4.0.0"
     },
     "devDependencies": {
         "nodemon": "^2.0.18"
