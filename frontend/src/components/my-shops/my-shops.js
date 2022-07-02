@@ -1,19 +1,8 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./my-shops.scss";
-import addImg from "../../assets/logo/add-img.svg";
-import {
-  Form,
-  Button,
-  Container,
-  Row,
-  Co,
-  Col,
-  Card,
-  FormControl,
-  CardImg, ListGroup, ListGroupItem,
-} from "react-bootstrap";
-import { AddProduct } from "../add-product/add-product";
-import { NewProduct } from "../create-product/create-product";
+import {Button, Card, Col, Container, Form, FormControl, ListGroup, ListGroupItem, Row,} from "react-bootstrap";
+import {AddProduct} from "../add-product/add-product";
+import {NewProduct} from "../create-product/create-product";
 
 export function MyShops() {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
@@ -21,8 +10,24 @@ export function MyShops() {
   const [currentShop, setCurrentShop] = useState(    {id: 2, name: "غرب گستران شرق", items:[]},
   )
 
+  useEffect( () => {
+    async function fetchStores() {
+      const res = await fetch("http://127.0.0.1:3002/shopowner/stores", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      return await res.json()
+    }
+    fetchStores();
+  })
+
   const addItems = (addedItems) => {
-    addedItems.forEach(item => item.isAdded = true);
+    currentShop.items.forEach((item) => {
+      item.isAdded = !!addedItems.includes(item);
+    })
   }
 
   const mockData = [
