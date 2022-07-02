@@ -19,10 +19,7 @@ module.exports.generateOTP = () => {
 };
 
 module.exports.sendMail = async (params) => {
-    console.log("here22");
     try {
-<<<<<<< HEAD
-        console.log("here23");
         let info = await transporter.sendMail({
             from: MAIL_SETTINGS.auth.user,
             to: "tahamousavi.sbu@gmail.com",
@@ -39,35 +36,10 @@ module.exports.sendMail = async (params) => {
      </div>
       `,
         });
-        console.log("here40");
         return info;
     } catch (error) {
         console.log(error);
         return false;
-=======
-        console.log("here24");
-        var number = "+98" + "9116455064";
-        console.log("here26");
-        messagebird.verify.create(number,
-            {
-                originator: 'TorobClone',
-                timeout: 600,
-                template: 'Your verification code is %token.'
-            },
-            function (err, response) {
-                console.log("here36");
-                if (err) {
-                    console.log("here38");
-                    return error(res, "SMS Error", 401);
-                }
-                console.log(response);
-
-            });
-        console.log("here40");
-
-    } catch (err) {
-        return error(res, error, 401);
->>>>>>> c496160b92019d86b28634ebebeac6e08eb3db51
     }
 };
 
