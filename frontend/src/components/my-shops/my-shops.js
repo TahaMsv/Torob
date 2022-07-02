@@ -74,13 +74,13 @@ export function MyShops() {
     setCurrentShopProducts(currentShopProducts);
   }
   
-  const addProductToStore = async (productId) => {
+  const addProductToStore = async (productId, suggestedPrice) => {
     const res = await fetch("http://127.0.0.1:3002/product/addstore", {
       method: "POST",
       body: JSON.stringify({
         productId: productId,
         shopId: currentShop.id,
-        suggestedPrice: 2000,
+        suggestedPrice,
       }),
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -89,8 +89,8 @@ export function MyShops() {
     }).then((result) => result.json())
   }
 
-  const addItems = async (addedItems) => {
-    await Promise.all(addedItems.map(item => addProductToStore(item)));
+  const addItems = async (addedItems, suggestedPrice) => {
+    await Promise.all(addedItems.map(item => addProductToStore(item, suggestedPrice)));
     fetchData();
   }
 

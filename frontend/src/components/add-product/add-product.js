@@ -16,6 +16,7 @@ import './add-product.scss'
 export function AddProduct(props) {
 
     const [selectedItems, setSelectedItems] = useState([]);
+    const [suggestedPrice, setSuggestedPrice] = useState(0);
 
     useEffect(()=> {
         setSelectedItems(props.currentShop.products ?? [])
@@ -29,8 +30,8 @@ export function AddProduct(props) {
     }
 
     const onConfirm = () => {
-        props.addItems(selectedItems);
-        props.setShow(false)
+        props.addItems(selectedItems, suggestedPrice);
+        props.setShow(false);
     }
 
         return (
@@ -57,6 +58,11 @@ export function AddProduct(props) {
                                         لپتاپ
                                     </option>
                                 </Form.Select>
+                            </FormGroup>
+                            <FormGroup style={{marginTop: "1rem"}}>
+                                <Form.Label>قیمت پیشنهادی</Form.Label>
+                                <Form.Control type="number" onChange={(e) => setSuggestedPrice(e.target.value)}>
+                                </Form.Control>
                             </FormGroup>
                             <Container>
                                 <Row>
