@@ -7,9 +7,9 @@ import {NewProduct} from "../create-product/create-product";
 export function MyShops() {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showCreateProductModal, setShowCreateProductModal] = useState(false);
-  const [currentShop, setCurrentShop] = useState({id: 2, name: "غرب گستران شرق", items:[]},)
-  const [stores, setStores] = useState([])
-
+  const [currentShop, setCurrentShop] = useState({id: 2, name: "غرب گستران شرق", items:[]},);
+  const [stores, setStores] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
 
   useEffect( () => {
     async function fetchStores() {
@@ -30,9 +30,9 @@ export function MyShops() {
           "Authorization": "Bearer " + localStorage.getItem("token"),
           "Content-type": "application/json; charset=UTF-8"
       }
-      })
+      });
       const products = await res.json();
-      console.log(products)
+      setAllProducts(products);
     }
     fetchStores();
     fetchProducts();
@@ -192,6 +192,7 @@ export function MyShops() {
         setShow={setShowAddProductModal}
         addItems={addItems}
         currentShop={currentShop}
+        allProducts={allProducts}
       ></AddProduct>
       <NewProduct
         show={showCreateProductModal}
