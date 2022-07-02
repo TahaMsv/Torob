@@ -132,13 +132,7 @@ export function MyShops() {
               </Button>
             </Form>
           </Card>
-        </Col> {/*{currentShop.items.map((item) => (*/}
-              {/*  <div>*/}
-              {/*    <img src={item.img} style={{ width: "5rem" }} />*/}
-              {/*    <h5>{item.name}</h5>*/}
-              {/*    <span>{item.price}</span>*/}
-              {/*  </div>*/}
-              {/*))}*/}
+        </Col> 
         <Col>
           <Card>
           <Card.Header className="card-header">
