@@ -18,7 +18,7 @@ import { NewProduct } from "../create-product/create-product";
 export function MyShops() {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showCreateProductModal, setShowCreateProductModal] = useState(false);
-  const [currentShop, setCurrentShop] = useState(    {id: 2, name: "غرب گستران شرق", items:mockData},
+  const [currentShop, setCurrentShop] = useState(    {id: 2, name: "غرب گستران شرق", items:[]},
   )
 
   const addItems = (addedItems) => {
