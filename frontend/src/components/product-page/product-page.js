@@ -31,6 +31,25 @@ export default class ProductPage extends React.Component {
         .catch((__) => {});
     }
 
+    fetchAddToLatest(productId) {
+        fetch(`http://127.0.0.1:3002/normaluser/addlatest`, {
+            method: "PUT",
+            body: JSON.stringify({
+                productId
+            }),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => {
+            return res.json();
+        })
+        .then((json) => {
+        })
+        .catch((__) => {});
+    }
+
     fetchAddToFavorite(productId) {
         fetch(`http://127.0.0.1:3002/normaluser/addfavorite`, {
             method: "PUT",
@@ -88,6 +107,7 @@ export default class ProductPage extends React.Component {
         const productId = this.props.match.params.id;
 
         this.fetchProduct(productId);
+        this.fetchAddToLatest(productId);
         const mockProduct = {
             id: 15,
             name: "iPhone 13 pro max",

@@ -1,6 +1,11 @@
 .filter-side {
     text-align: right;
     padding: 0 10px;
+
+    ul {
+        padding-left: 0;
+    }
+    
     h2 {
         font-size: 150%;
         font-weight: 500;

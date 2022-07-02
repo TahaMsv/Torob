@@ -7,6 +7,8 @@ export default class FilterSide extends React.Component {
     state = {
         showPriceFilter: false,
         showTypeFilter: false,
+        minPrice: 0,
+        maxPrice: 9999999,
     }
     render() {
         return (
@@ -20,11 +22,15 @@ export default class FilterSide extends React.Component {
                             <div className="price-filter">
                                 <div>
                                     <label htmlFor="from">از</label>
-                                    <input id="from" type="number"/>
+                                    <input onChange={(e) => this.setState({minPrice: e.target.value})}
+                                         id="from" type="number"/>
                                     <label htmlFor="to">تا</label>
-                                    <input id="to" type="number"/>
+                                    <input onChange={(e) => this.setState({maxPrice: e.target.value})}
+                                        id="to" type="number"/>
                                 </div>
-                                <button>اعمال فیلتر قیمت</button>
+                                <button onClick={() => this.props.submitPrice(this.state.minPrice, this.state.maxPrice)}>
+                                    اعمال فیلتر قیمت
+                                </button>
                             </div>
                         ) : ''}
                     </li>

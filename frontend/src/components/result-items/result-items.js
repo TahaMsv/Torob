@@ -38,10 +38,10 @@ export default class ResultItems extends React.Component {
 
     componentDidMount() {
         const search = this.props.location.search;
-
-        const searchValue = new URLSearchParams(search).get('value');
-        const type = new URLSearchParams(search).get('type');
-        const sortby = new URLSearchParams(search).get('sortby');
+        const params = new URLSearchParams(search);
+        const searchValue = params.get('value');
+        const type = params.get('type');
+        const sortby = params.get('sortby');
         this.setState({sortby})
         this.sendSearchReq(searchValue, type, sortby);
         const mockValue = [
@@ -95,11 +95,26 @@ export default class ResultItems extends React.Component {
 
     changeSort(sortby) {
         const search = this.props.location.search;
-        const searchValue = new URLSearchParams(search).get('value');
-        const type = new URLSearchParams(search).get('type');
+        const params = new URLSearchParams(search);
+        const searchValue = params.get('value');
+        const type = params.get('type');
+        
         this.setState({sortby});
+
         window.location.href = `http://127.0.0.1:3001/search?${searchValue ? 'value='+searchValue:''}&${type ? 'type='+type:''}&${'sortby='+sortby}`;
         this.sendSearchReq(searchValue, type, sortby);
+    }
+
+    setMinMaxPrice(minpr, maxpr) {
+        console.log(minpr, maxpr)
+        const search = this.props.location.search;
+        const params = new URLSearchParams(search);
+        const searchValue = params.get('value');
+        const type = params.get('type');
+        const sortby = params.get('sortby');
+        params.set('minprice', minpr);
+        params.set('maxprice', maxpr);
+        window.location.href = `http://127.0.0.1:3001/search?${params.toString()}`;
 
     }
 
@@ -109,7 +124,7 @@ export default class ResultItems extends React.Component {
                 <Navbar />
                 <div className="result-items">
                     <aside>
-                        <FilterSide />
+                        <FilterSide submitPrice={(minpr, maxpr) => this.setMinMaxPrice(minpr, maxpr)}/>
                     </aside>
                     {
                         this.state.resultItems.length > 0 ? (
