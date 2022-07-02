@@ -1,5 +1,6 @@
 import React from "react"
 import './my-reports.scss';
+import Table from 'react-bootstrap/Table';
 
 export default class MyReports extends React.Component {
     state = {
@@ -59,7 +60,7 @@ export default class MyReports extends React.Component {
     render() {
         return (
             <div className="my-reports">
-                <table>
+                <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th>نام فروشگاه</th><th>نام کاربر </th>  <th>نوع گزارش</th> <th>محتوا</th>
@@ -77,10 +78,7 @@ export default class MyReports extends React.Component {
                             ))
                         })}
                     </tbody>
-                </table>
-                <ul>
-                    
-                </ul>
+                </Table>
             </div>
         )
     }
