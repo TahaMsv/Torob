@@ -30,17 +30,22 @@ router.post('/addstore', authorization, async function (req, res, next) {
 });
 
 
-router.get('/stores', async function (req, res, next) {
-    const stores = await (Store.find({}).sort({ id: "descending" }));
-    console.log(stores);
-    const responseList = stores.map(store => {
-        return {
-            "id": store.id,
-            "name": store.name,
-            "city": store.city
-        };
-    });
-    return res.status(200).json(responseList);
+router.get('/stores', authorization, async function (req, res, next) {
+    const owner = await (StoreOwner.findOne({ email: req.user.email }));
+    if (owner) {
+        const stores = await (Store.find({
+            id: { $in: owner.stores }
+        }).sort({ id: "descending" }));
+        const responseList = stores.map(store => {
+            return {
+                "id": store.id,
+                "name": store.name,
+                "city": store.city
+            };
+        });
+        return res.status(200).json(responseList);
+    }
+    return error(res, "permission denied", 400);
 });
 
 

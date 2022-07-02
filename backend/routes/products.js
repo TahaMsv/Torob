@@ -76,7 +76,7 @@ router.post('/create', authorization, async function (req, res, next) {
                 product.save();
                 store.save();
                 return res.status(200).json({
-                    id: product.productId,
+                    id: product.id,
                     message: "successful"
                 });
             }

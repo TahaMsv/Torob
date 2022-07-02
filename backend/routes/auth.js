@@ -5,7 +5,7 @@ const NormalUser = mongoose.model('NormalUser');
 const AdminUser = mongoose.model('AdminUser');
 const StoreOwner = mongoose.model('StoreOwner');
 const error = require("../utilities/errorFunction");
-const { generateOTP, sendMail } = require('../servises/otp');
+const { generateOTP, sendSMS } = require('../servises/otp');
 
 router.post('/signup', async (req, res, next) => {
     const { email, name, phone, password, userType, stores } = req.body;
@@ -63,12 +63,14 @@ router.post('/signup', async (req, res, next) => {
         return error(res, "userType does not exist", 401);
     }
 
+    // console.log("here66");
     // try {
-    //     await sendMail({
-    //         to: "tahamousavi.sbu@gmail.com",
+    //     console.log("here68");
+    //     await sendSMS({
     //         OTP: otpGenerated,
     //     });
-    // } catch (error) {
+    //     console.log("here72");
+    // } catch (err) {
     //     return error(res, 'Unable to sign up, Please try again later', 401);
     // }
 

@@ -14,7 +14,6 @@ mongoose.connect(dbPath,  {useNewUrlParser: true, useUnifiedTopology: true});
 require('./models/product');
 require('./models/report');
 require('./models/store');
-require('./models/storeOwner');
 require('./models/type');
 require('./models/user');
 
