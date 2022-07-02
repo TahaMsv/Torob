@@ -5,8 +5,12 @@ const NormalUser = mongoose.model('NormalUser');
 const AdminUser = mongoose.model('AdminUser');
 const StoreOwner = mongoose.model('StoreOwner');
 const error = require("../utilities/errorFunction");
+<<<<<<< HEAD
 const { generateOTP, sendMail } = require('../servises/otp');
 
+=======
+// const { generateOTP, sendMail } = require('../servises/otp');
+>>>>>>> c496160b92019d86b28634ebebeac6e08eb3db51
 
 router.post('/signup', async (req, res, next) => {
     const { email, name, phone, password, userType, stores } = req.body;
@@ -128,6 +132,7 @@ router.post('/login', async (req, res, next) => {
         if (storeOwner) {
             if (storeOwner.password !== password) return error(res, "wrong password", 400);
             const token = storeOwner.getJWT();
+            console.log(token);
             return res.status(200).json({ token, userType, message: "successful" });
         }
     }

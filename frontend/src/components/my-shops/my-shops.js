@@ -9,9 +9,10 @@ import "react-multi-carousel/lib/styles.css";
 export function MyShops() {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showCreateProductModal, setShowCreateProductModal] = useState(false);
-  const [currentShop, setCurrentShop] = useState({id: 2, name: "غرب گستران شرق", items:[]},);
+  const [currentShop, setCurrentShop] = useState({});
   const [stores, setStores] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+  const [currentShopProducts, setCurrentShopProducts] = useState([]);
 
   const responsive = {
     superLargeDesktop: {
@@ -33,76 +34,65 @@ export function MyShops() {
     }
   };
 
-  useEffect( () => {
-    async function fetchStores() {
+  const fetchData = () => {
+    async function fetchStores(allProducts) {
       const res = await fetch("http://127.0.0.1:3002/shopowner/stores", {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Authorization": "Bearer " + localStorage.getItem("token"),
           "Content-type": "application/json; charset=UTF-8",
         },
       });
       const resultStores = await res.json();
-      setStores(resultStores.filter(store => store.name).map(store => ({...store, items: []})))
+      const filteredStores = resultStores.filter(store => store.name);
+      setStores(filteredStores);
+      const currentShop = filteredStores[0] ?? {id:'', name:'', products: []};
+      syncCurrentShop(currentShop, allProducts);
     }
 
     async function fetchProducts() {
       const res = await fetch("http://127.0.0.1:3002/search", {
-      method: "GET",
-      headers: {
+        method: "GET",
+        headers: {
           "Authorization": "Bearer " + localStorage.getItem("token"),
           "Content-type": "application/json; charset=UTF-8"
-      }
+        }
       });
       const products = await res.json();
       setAllProducts(products);
+      return products;
     }
-    fetchStores();
-    fetchProducts();
-  }, [])
-
-  const addItems = (addedItems) => {
-    currentShop.items.forEach((item) => {
-      item.isAdded = !!addedItems.includes(item);
-    })
+    fetchProducts().then((products)=> fetchStores(products));
   }
 
-  const mockData = [
-    {
-      id: 3,
-      name: "لنوو آیدیا پد",
-      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-      leastPrice: 200000,
-      dateAdded: "1401/2/31",
-      isFavorited: true,
-      isAdded: false
-    }, {
-      id: 4,
-      name: "لنوو آیدیا پد",
-      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-      leastPrice: 200000,
-      dateAdded: "1401/2/31",
-      isFavorited: true,
-      isAdded: false
-    },{
-      id: 1,
-      name: "لنوو آیدیا پد",
-      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-      leastPrice: 200000,
-      dateAdded: "1401/2/31",
-      isFavorited: true,
-      isAdded: false
-    },{
-      id: 2,
-      name: "لنوو آیدیا پد",
-      img: "https://www.notebookcheck.com/uploads/tx_nbc2/LenovoIdeaPad3-17__1__02.jpg",
-      leastPrice: 200000,
-      dateAdded: "1401/2/31",
-      isFavorited: true,
-      isAdded: false
-    },
-  ]
+  useEffect( () =>
+    fetchData(), [])
 
+  const syncCurrentShop = (shop, allProducts) => {
+    setCurrentShop(shop);
+    const currentShopProducts = shop.products.map(productId => allProducts.find((prod) => prod.id === productId));
+    setCurrentShopProducts(currentShopProducts);
+  }
+  
+  const addProductToStore = async (productId, suggestedPrice) => {
+    const res = await fetch("http://127.0.0.1:3002/product/addstore", {
+      method: "POST",
+      body: JSON.stringify({
+        productId: productId,
+        shopId: currentShop.id,
+        suggestedPrice,
+      }),
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then((result) => result.json())
+  }
+
+  const addItems = async (addedItems, suggestedPrice) => {
+    await Promise.all(addedItems.map(item => addProductToStore(item, suggestedPrice)));
+    fetchData();
+  }
 
   const onAddStore = async (event) => {
     event.preventDefault();
@@ -110,7 +100,7 @@ export function MyShops() {
       name: event.target[0].value,
       city: event.target[1].value
     };
-    fetch("http://127.0.0.1:3002/shopowner/addstore", {
+    await fetch("http://127.0.0.1:3002/shopowner/addstore", {
       method: "POST",
       body: JSON.stringify(store),
       headers: {
@@ -118,12 +108,7 @@ export function MyShops() {
         "Content-type": "application/json; charset=UTF-8",
       },
     })
-    .then(res => {
-      return res.json();
-    })
-    .then(json => {
-      console.log(json);
-    });
+    fetchData();
   };
 
   return (
@@ -165,7 +150,7 @@ export function MyShops() {
               <ListGroup>
                 {stores.map(store =>
                 <ListGroupItem variant={"secondary"} action active={currentShop.id === store.id}
-                               onClick={() => setCurrentShop(store)} style={{textAlign:"start"}}>{store.name}
+                               onClick={() => syncCurrentShop(store, allProducts)} style={{textAlign:"start"}}>{store.name}
                 </ListGroupItem>
                 )}
               </ListGroup>
@@ -195,7 +180,7 @@ export function MyShops() {
             <Card.Body>
               <div className="carousel-container">
                 <Carousel responsive={responsive}>
-                  {mockData.map(item => (
+                  {currentShopProducts.map(item => (
                       <Card style={{ width: '16rem'}}>
                         <Card.Img variant="top" src={item.img} />
                         <Card.ImgOverlay>
@@ -226,6 +211,7 @@ export function MyShops() {
         show={showCreateProductModal}
         setShow={setShowCreateProductModal}
         currentShop={currentShop}
+        afterCreate={fetchData}
       ></NewProduct>
     </Container>
   );

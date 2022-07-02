@@ -16,26 +16,30 @@ import './add-product.scss'
 export function AddProduct(props) {
 
     const [selectedItems, setSelectedItems] = useState([]);
+    const [suggestedPrice, setSuggestedPrice] = useState(0);
 
     useEffect(()=> {
-        setSelectedItems(props.currentShop.items.filter(item => item.isAdded))
+        setSelectedItems(props.currentShop.products ?? [])
     }, [props.currentShop])
 
     const handleAddRemove = (item) => {
-        if (selectedItems.includes(item))
-            setSelectedItems(selectedItems.filter(el => el.id !== item.id));
+        if (selectedItems.includes(item.id))
+            setSelectedItems(selectedItems.filter(el => el !== item.id));
         else
-            setSelectedItems([...selectedItems, item])
+            setSelectedItems([...selectedItems, item.id])
     }
 
     const onConfirm = () => {
-        props.addItems(selectedItems);
-        props.setShow(false)
+        props.addItems(selectedItems, suggestedPrice);
+        props.setShow(false);
     }
 
         return (
             <ThemeProvider dir={"rtl"}>
-                <Modal show={props.show} onHide={() => props.setShow(false)} size={"lg"}>
+                <Modal show={props.show} onHide={() => {
+                    props.setShow(false);
+                    setSelectedItems(props.currentShop.products ?? []);
+                }} size={"lg"}>
                     <ModalHeader className="justify-content-between" closeButton>
                         <ModalTitle>افزودن کالا</ModalTitle>
                     </ModalHeader>
@@ -55,6 +59,11 @@ export function AddProduct(props) {
                                     </option>
                                 </Form.Select>
                             </FormGroup>
+                            <FormGroup style={{marginTop: "1rem"}}>
+                                <Form.Label>قیمت پیشنهادی</Form.Label>
+                                <Form.Control type="number" onChange={(e) => setSuggestedPrice(e.target.value)}>
+                                </Form.Control>
+                            </FormGroup>
                             <Container>
                                 <Row>
                                     <Col>
@@ -71,7 +80,7 @@ export function AddProduct(props) {
                                                 <Card.Img variant="top" src={item.img} />
                                                 <Card.ImgOverlay>
                                                     <input type={"checkbox"}
-                                                            checked={selectedItems.includes(item)}/>
+                                                            checked={selectedItems.includes(item.id)}/>
                                                 </Card.ImgOverlay>
                                                 <Card.Body>
                                                     <Card.Title>{item.name}</Card.Title>

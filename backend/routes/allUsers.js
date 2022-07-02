@@ -4,6 +4,7 @@ var router = express.Router();
 const User = mongoose.model('User');
 const NormalUser = mongoose.model('NormalUser');
 const AdminUser = mongoose.model('AdminUser');
+const StoreOwnerUser = mongoose.model('StoreOwner');
 const error = require("../utilities/errorFunction");
 const authorization = require('../middlewares/user-auth');
 
@@ -16,7 +17,7 @@ router.put('/update', authorization, async function (req, res, next) {
     const existUser = await (User.findOne({ email }));
     if (existUser && email != req.user.email) return error(res, "Email already exist", 401);
 
-    const user = await (User.findOne({ emial: req.user.email }));
+    const user = await (User.findOne({ email: req.user.email }));
     user.name = name;
     user.email = email;
     user.phone = phone;
@@ -28,8 +29,9 @@ router.put('/update', authorization, async function (req, res, next) {
 
 router.get('/getuserdetails', authorization, async function (req, res, next) {
 
-    let user = await (NormalUser.findOne({ emial: req.user.email }));
-    if (!user) user = await (AdminUser.findOne({ emial: req.user.email }));
+    let user = await (NormalUser.findOne({ email: req.user.email }));
+    if (!user) user = await(StoreOwnerUser).findOne({ email: req.user.email });
+    if (!user) user = await (AdminUser.findOne({ email: req.user.email }));
     if (!user) return error(res, "User not found", 401);
     return res.status(200).json({
         email: user.email,

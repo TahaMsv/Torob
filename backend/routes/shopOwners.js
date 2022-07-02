@@ -36,11 +36,7 @@ router.get('/stores', authorization, async function (req, res, next) {
             id: { $in: owner.stores }
         }).sort({ id: "descending" }));
         const responseList = stores.map(store => {
-            return {
-                "id": store.id,
-                "name": store.name,
-                "city": store.city
-            };
+            return store;
         });
         return res.status(200).json(responseList);
     }

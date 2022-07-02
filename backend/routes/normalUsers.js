@@ -11,7 +11,7 @@ const authorization = require('../middlewares/user-auth');
 router.put('/addfavorite', authorization, async function (req, res, next) {
   const { productId } = req.body;
   if (!productId) return error(res, "productId is empty", 400);
-  const normalUser = await (NormalUser.findOne({ emial: req.user.email }));
+  const normalUser = await (NormalUser.findOne({ email: req.user.email }));
   if (normalUser.favoriteProducts.includes(productId)) return error(res, "this product is already in favorites list", 400);
   normalUser.favoriteProducts.unshift(productId);
   normalUser.save();
@@ -21,7 +21,7 @@ router.put('/addfavorite', authorization, async function (req, res, next) {
 router.delete('/removefavorite', authorization, async function (req, res, next) {
   const { productId } = req.body;
   if (!productId) return error(res, "productId is empty", 400);
-  const normalUser = await (NormalUser.findOne({ emial: req.user.email }));
+  const normalUser = await (NormalUser.findOne({ email: req.user.email }));
   if (!normalUser.favoriteProducts.includes(productId)) return error(res, "this product is not in favorites list", 400);
   var productIndex = normalUser.favoriteProducts.indexOf(productId);
   normalUser.favoriteProducts.splice(productIndex, 1);
@@ -32,7 +32,7 @@ router.delete('/removefavorite', authorization, async function (req, res, next) 
 router.put('/addlatest', authorization, async function (req, res, next) {
   const { productId } = req.body;
   if (!productId) return error(res, "productId is empty", 400);
-  const normalUser = await (NormalUser.findOne({ emial: req.user.email }));
+  const normalUser = await (NormalUser.findOne({ email: req.user.email }));
   if (normalUser.latestProducts.includes(productId)) {
     var productIndex = normalUser.latestProducts.indexOf(productId);
     normalUser.latestProducts.splice(productIndex, 1);
@@ -47,7 +47,7 @@ router.put('/addlatest', authorization, async function (req, res, next) {
 });
 
 router.get('/favorites', authorization, async function (req, res, next) {
-  const normalUser = await (NormalUser.findOne({ emial: req.user.email }));
+  const normalUser = await (NormalUser.findOne({ email: req.user.email }));
 
   const promises = normalUser.favoriteProducts.map(async productId => {
     const product = await (Product.findOne({ id: productId }));
@@ -72,7 +72,7 @@ router.get('/favorites', authorization, async function (req, res, next) {
 });
 
 router.get('/latest', authorization, async function (req, res, next) {
-  const normalUser = await (NormalUser.findOne({ emial: req.user.email }));
+  const normalUser = await (NormalUser.findOne({ email: req.user.email }));
 
   const promises = normalUser.latestProducts.map(async productId => {
     const product = await (Product.findOne({ id: productId }));

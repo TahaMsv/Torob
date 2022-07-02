@@ -7,41 +7,45 @@ export default class MyReports extends React.Component {
         reports: [{storename: '', reports: []}]
     }
 
-    fetchMyReports() {
+    async fetchMyReports() {
         let myStores = [];
-        fetch('localhost/shopowner/stores')
-        .then((res) => {
-            if (res.ok) return res.json();
-            else throw new Error("Server error");
-        })
-        .then((json) => {
-            myStores = json;
-        })
-        .catch((__) => {});
-
-        let arr = []
+        const res = await fetch('http://127.0.0.1:3002/shopowner/stores', {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token"),
+                "Content-type": "application/json; charset=UTF-8",
+            },
+        });
+        myStores = await res.json();
+        // console.log(myStores);
+        let arr = [];
 
         for(const store of myStores) {
             let storeReports = [];
-            fetch(`localhost/report/${store['id']}`)
+            storeReports = await fetch(`http://127.0.0.1:3002/report/${store['id']}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token"),
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+            })
             .then((res) => {
-                if (res.ok) return res.json();
-                else throw new Error("Server error");
-            })
-            .then((json) => {
-                storeReports = json;
-                if (storeReports.length > 0)
-                    arr.push({storename: store['name'], reports: storeReports});
-            })
-            .catch((__) => {});
+                return res.json();
+            });
+            if (storeReports.length > 0)
+                arr.push({storename: store['name'], reports: storeReports});
         }
 
-        this.setState({reports: arr});  
+        console.log(arr);
+
+        this.setState({reports: arr}, () => {
+            // console.log(this.state.reports);
+        });  
     }
 
-    componentDidMount() {
-        // this.fetchMyReports();
-
+    async componentDidMount() {
+        await this.fetchMyReports();
+        console.log(this.state.reports);
         const mockData = [
             {
                 storename: 'دیجیکالا', 
@@ -55,7 +59,7 @@ export default class MyReports extends React.Component {
             }, 
         ];
 
-        this.setState({reports: mockData});
+        // this.setState({reports: mockData});
     }
     render() {
         return (

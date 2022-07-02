@@ -122,11 +122,13 @@ router.get('/:product_id', authorization, async function (req, res, next) {
 
     const user = await (NormalUser.findOne({ email: req.user.email }));
     let isFavorited = false;
-    user.favoriteProducts.map(pId => {
-        if (pId == product.id) {
-            isFavorited = true;
-        }
-    })
+    if (user) {
+        user.favoriteProducts.map(pId => {
+            if (pId == product.id) {
+                isFavorited = true;
+            }
+        });
+    }
     const storeIDs = product.stores.map(sotre => sotre["shopId"]);
     const stores = await (Store.find({
         id: { $in: storeIDs }
