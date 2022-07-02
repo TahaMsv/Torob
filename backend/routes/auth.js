@@ -77,7 +77,7 @@ router.post('/signup', async (req, res, next) => {
     return res.status(200).json({
         token,
         userType,
-        OTP: otpGenerated,
+        otp: otpGenerated,
         message: "successful"
     });
 });
