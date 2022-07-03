@@ -13,12 +13,6 @@ Torob is a smart shopping search engine. where people search for the products th
 
 ## Installation
 
-Install my-project with npm
-
-```bash
-  npm install my-project
-  cd my-project
-```
 Install both front and backend by npm
 
 ```bash
