@@ -19,7 +19,7 @@ Install my-project with npm
   npm install my-project
   cd my-project
 ```
-Install server side by npm
+Install both front and backend by npm
 
 ```bash
   npm install 
@@ -27,7 +27,7 @@ Install server side by npm
     
 ## Deployment
 
-To deploy this project run
+To deploy this project both front and back run
 
 ```bash
   npm start
